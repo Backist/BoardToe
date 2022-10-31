@@ -187,13 +187,13 @@ def rotate_index(index: list[tuple[int, int]], depth: int) -> list[tuple[int, in
     return [(i[0], tuple(i[1])) for i in index]
 
 
-def check_adjacent(matrix: list[list[int]]) -> list[tuple[int, tuple[int, int]]]: #[(player, (x,y))]
-    "Fucntion that returns a list with the adjacent positions to each player"
+def check_adjacent(matrix: list[list[int]], player: int) -> list[tuple[int, tuple[int, int]]]: #[(x,y), ...]
+    "Function that returns a list with the adjacent positions to each player"
     assert isinstance(matrix, list) and 3 <= len(matrix), f"Param @matrix must be a list and depth <= 3, no {type(matrix).__name__}"
     #TERMINALO PERRACO
 
 
-def check_enemy_win(matrix: list[list[int]]) -> list: 
+def check_win(matrix: list[list[int]]) -> list[tuple[int,int]]:
     """Comprueba y devuelve que jugadores pueden ganar colocando una sola ficha
     - NOTE: La funcion puede devolver una lista vacia si ningun jugador esta a un movimiento de ganar
     - NOTE 2: Si los dos jugadores comparten una posicion, se muestran las dos posiciones, no una.
@@ -234,11 +234,11 @@ if __name__ == "__main__":
         · check_win(player) Checkea si el jugador pasado de argumento (0 o 1) esta a un movimiento de ganar horizontal, vertical y diagonalmente.
         Devuelve una tupla o lista con todas las posiciones con las que dicho jugador puede ganar y si no hay la devuleve vacia.
         Ej: return [(x,y), ...]
-        Para mayor comprobacion habria que devolver un booleano que especifique cuanda hay mas de dos posibles jugadas ganadoras si estan relacionadas, si es true es una victoria absoluta, si es false aun puedes perder.
+        (De segundas): Para mayor comprobacion habria que devolver un booleano que especifique cuanda hay mas de dos posibles jugadas ganadoras si estan relacionadas, si es true es una victoria absoluta, si es false aun puedes perder.
         Ej: return [(x,y), ...], bool_de_relacion
         · check_adjacent(player) Checkea todas las posiciones en la tabla donde el jugador pasado de parametro pueda colocar una ficha adyacente a otra suya.
         Devuelve una tupla o lista con todas las posiciones con las que dicho jugador puede poner adyacentes especificando para cada posicion cuantas fichas adyacentes suyas tiene, cuantas adyacentes eneigas tiene y cuantas vacias adyacentes tiene y si no hay la devuleve vacia.
-        Ej: return [((adyacentes_aliadas, adyacentes_enemigas, adyacentes_vacias), (x,y)),...]
+        Ej: return [((adyacentes_aliadas: int, adyacentes_enemigas: int, adyacentes_vacias: int), (x,y)),...]
 
     Con estas dos simples funciones bastaria pero para mayor complejidad metele la siguiente funcion:
         · check_prediction(player) Checkea el proximo movimiento del jugador pasado segun la propia forma del bot de calcular sus movimientos.

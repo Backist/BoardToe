@@ -20,6 +20,8 @@ class BoardGame:
     AVAILABLE_COLORS    = [c for c in vars(Fore).keys() if c != "RESET" or not c.endswith("_EX")]
     XCOLOR              = Fore.LIGHTRED_EX      #* static color for 'X' if player does not give any color
     OCOLOR              = Fore.LIGHTWHITE_EX    #* static color for '0' if player does not give any color
+    _ptycachetuple      = namedtuple("PartyCache", ["dictmap"])
+
 
     def __init__(
         self, 
@@ -67,11 +69,10 @@ class BoardGame:
         self._playing       = False
         
         self._movtuple      = namedtuple("Movement", ["token", "player_name", "position", "moviment_time"])
-        self._ptycachetuple = namedtuple("PartyCache", ["dictmap"])
+        #self._ptycachetuple = namedtuple("PartyCache", ["dictmap"])
         self._party_cache   = self._make_party_cache()
         self._game_cache = []
         self.debuginfo      = self._ptycachetuple(self._party_cache)
-
 
     @property
     def playing(self):
@@ -96,7 +97,13 @@ class BoardGame:
         }
         return party_cache
         
-        
+    """
+    @classmethod
+    def weak_ref() ->:
+        ...
+    #Me dijiste tu que lo hiciese
+    """
+    
     def _make_player_cache(self, player, token, color) -> dict[str,]:
         "Makes a player cache."
 
