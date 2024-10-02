@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "boardtoe"
+version = "0.1.0"
+description = "Game inspired by Tic-Tac-Toe but with boards up to 8x8, based on the terminal."
+authors = [
+    "Backist <alvarodrumer54@gmail.com>", 
+    "TheWisker <thewisker@protonmail.com>"
+]
+maintainers = [
+    "Backist <alvarodrumer54@gmail.com>", 
+    "TheWisker <thewisker@protonmail.com>"
+]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/Backist/BoardToe"
+documentation = "https://github.com/Backist/BoardToe"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pybeaut = "^1.1.1b0"
+keyboard = "^0.13.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

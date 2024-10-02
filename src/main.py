@@ -2,18 +2,20 @@ from contextlib import suppress
 from consts import *
 from utils import *
 from AI.Bot import *
-from constructor import BoardGame, Logger,AVAILABLE_LANGS
-from Player import Player
-from TUI import *
+from core import BoardGame
+from logger import Logger
+from langs import AVAILABLE_LANGS
+from Player import Player, _Col
+from console import *
+import pybeaut as pb
 
 
-#TODO ///////////////////////////////////////      MAIN GAME FLOW        ////////////////////////////////////////////////
 if __name__ == "__main__":
 
     with suppress(KeyboardInterrupt):
         load_menu()
         
-    lang = input(Center.XCenter(f"{_Col.cyan}{Logger._get_phrase('game', 0)}:  {_Col.reset}")).upper() #¿En que idioma desea jugar?
+    lang = input(pb.Center.XCenter(f"{_Col.cyan}{Logger._get_phrase('game', 0)}:  {_Col.reset}")).upper() #¿En que idioma desea jugar?
     while lang.upper() not in AVAILABLE_LANGS:
         preds = [l.upper() for l in AVAILABLE_LANGS if l[0] == lang[0] or l[:-3] == lang[:-3]]
         r = input(f"You'd want to say {preds} (y/n)")

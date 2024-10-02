@@ -1,29 +1,26 @@
 from pybeaut import Col as _Col
-from consts import EMOJI_MAPPING
-from _langs import *
+from consts import EMOJI_MAPPING as EM
+from langs import *
 
 
 # __all__ = ["Logger", "get_phrase", "AVAILABLE_LANGS"]
 
 
-# read-only purpose
-# EMOJI_MAPPING = {
-#     "gearwheel": " ⚙️ ",
-#     "megaphone": "📢",
-#     "lock": "🔒",
-#     "stop_signal": "⛔️",
-#     "exclamation": "❕",
-#     "loudspeaker": "🔊",
-#     "tie": "🤝",
-#     "robotic_arm": "🦾",
-#     "first_medal": "🥇",
-#     "cup": "🏆",
-#     "robot": "🤖",
-#     "magnifying_glass": "🔍"
-#     "question": "❔"
-# }
 
-EM = EMOJI_MAPPING
+# "gearwheel": " ⚙️ ",
+# "megaphone": "📢",
+# "lock": "🔒",
+# "stop_signal": "⛔️",
+# "exclamation": "❕",
+# "loudspeaker": "🔊",
+# "tie": "🤝",
+# "robotic_arm": "🦾",
+# "first_medal": "🥇",
+# "cup": "🏆",
+# "robot": "🤖",
+# "magnifying_glass": "🔍"
+# "question": "❔"
+
 
 loggers: dict[str, list[str, str]] = {
     "errors":       [_Col.blue, f"[{EM['gearwheel']} ][{EM['megaphone']}] ",   _Col.red],
@@ -32,7 +29,7 @@ loggers: dict[str, list[str, str]] = {
     "victory":      [_Col.blue, f"[{EM['cup']} ][{EM['first_medal']}] ",       _Col.cyan],
     "message":     [_Col.blue, f"[{EM['gearwheel']} ][{EM['loudspeaker']}] ",       _Col.white],
     "question":     [_Col.blue, f"[{EM['gearwheel']} ][{EM['question']}] ",       _Col.white],
-    }
+}
 
 
 class Logger:

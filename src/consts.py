@@ -1,10 +1,9 @@
-"Game constants"
-#---------------------------------------
+"""Game constants"""
 
 XTOKEN              = "❌"
 OTOKEN              = "⭕"
 EMPTOKEN            = "➖"
-TOKENS              = [XTOKEN, OTOKEN]  #* util para debug (saber si el token se encuentra en tokens validos p.e)
+TOKENS              = [XTOKEN, OTOKEN]  #* Util para debug.
 
 EMOJI_MAPPING = {
     "gearwheel": "⚙️",
@@ -56,7 +55,8 @@ BANNER3 = r"""
 """
 
 
-SPLASH_TEXT = r"""Bienvenido a BoardToe, un juego inspirado en el famoso tres en raya
-pero con la ventaja de poder jugarlo en tableros desde 3x3 hasta 8x8. 
-Además dispone de varios modos de juego diferentes como Jugador vs Jugador, 
-Jugador vs Maquina o Maquina vs Maquina."""
+SPLASH_TEXT = ("Bienvenido a BoardToe, un juego inspirado en el famoso tres en raya "
+                "pero con la ventaja de poder jugarlo en tableros desde 3x3 hasta 8x8. " 
+                "Además dispone de varios modos de juego diferentes como Jugador vs Jugador "
+                "Jugador vs Maquina o Maquina vs Maquina. "
+            )

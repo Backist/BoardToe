@@ -18,13 +18,13 @@ from typing import MutableMapping
 from pybeaut import Col as _Col
 
 
-__all__ = ["Player"]
+__all__ = ["Player", "_Col"]
 
 
 class Player(object):
     """Main player class with cache implementation."""
     
-    __fmts: dict = _Col.static_cols_mapping
+    __fmts: dict = _Col.static_colors_mapping
 
     def __init__(
         self,

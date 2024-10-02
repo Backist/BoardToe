@@ -1,5 +1,6 @@
 from functools import lru_cache
-
+from os import system, name
+    
 def multiple_instcheck(vars: tuple, checks: tuple | None, manual_check: list = None, strict: bool = False) -> bool | list[bool, str]:
      #! Hacer que el multiple_inscheck devuelva, en caso de strict=True, el valor que no cumple.
     """Function to simplicity the ``isinstance()`` checks.
@@ -27,7 +28,7 @@ def multiple_instcheck(vars: tuple, checks: tuple | None, manual_check: list = N
         return any(elem == mck for elem, mck in zip(vars, manual_check, strict=True))
     return all(elem == manual_check for elem in vars)
 
-def getKey(rawDict: dict, value, strict: bool = True) -> None | Exception:
+def get_key(rawDict: dict, value, strict: bool = True) -> None | Exception:
     """Get a dictionary item through the key. 
     - If ``strict`` param is give (by deafult) an exception will be raised
     """
@@ -50,8 +51,6 @@ def multiple_replace(rawstr: str, reml: tuple[tuple[str, str]], count: int = -1)
     return rawstr
 
 def cls():
-    from os import system, name
-    if name == "nt":
-        system("cls")
-    else:
-        return system("clear")
+    return system("cls") if name == "nt" else system("clear")
+    
+      

@@ -10,11 +10,26 @@ from random import choice, randint
 from typing import MutableMapping, List, Tuple
 
 from consts import TOKENS
-from core import win_check
+from helpers import win_check
 from Player import Player, _Col
 
-# Lista de nombres para los bots
-botnames = ["EUSTAQUIO", "FANICOWBELL"]
+
+def gen_random_name(size=randint(4,7)):
+    vowels = 'aeiou'
+    consonants = 'bcdfghjklmnpqrstvwxyz'
+    
+    name = []
+    
+    # Alternar entre consonantes y vocales para hacer el nombre legible
+    for i in range(size):
+        if i % 2 == 0:
+            name.append(choice(consonants))
+        else:
+            name.append(choice(vowels))
+    
+    # Capitalizar la primera letra para que parezca un nombre propio
+    return ''.join(name).capitalize()
+
 
 class Bot(Player):
     """
@@ -22,13 +37,12 @@ class Bot(Player):
     En cada turno, se debe llamar a la función turn() para obtener el movimiento que el bot quiere realizar.
     """
     
-    # Mapeo estático de colores definido en la clase _Col
-    __fmts: dict = _Col.static_cols_mapping
+    __fmts: dict = _Col.static_colors_mapping
 
     def __init__(
         self, 
         token: str,
-        name: str = "CPU {}",
+        name: str = None,
         color: str | _Col = _Col.white,
         difficulty: str = "Easy",
         custom_doc: str = None
@@ -36,12 +50,12 @@ class Bot(Player):
         """
         Inicializa un nuevo bot con los parámetros dados.
         """
-        if not isinstance(name, str):
+        if name and not isinstance(name, str):
             raise TypeError(f"El parámetro @name debe ser una cadena, no {name!r} del tipo {type(name).__name__}")
         elif not isinstance(token, str):
             raise TypeError(f"El parámetro @token debe ser una cadena, no {token!r} del tipo {type(token).__name__}")
         elif token not in TOKENS:
-            raise TypeError(f"Token inválido. Los tokens válidos son: '⭕' o '❌'")
+            raise TypeError("Token inválido. Los tokens válidos son: '⭕' o '❌'")
         elif color not in self.__fmts:
             raise TypeError(f"Color inválido. Los colores válidos son: {self.__fmts.keys()}")
         elif difficulty.capitalize() not in {"Easy", "Normal", "Hard", "Imposible"}:
@@ -51,7 +65,7 @@ class Bot(Player):
 
         # Inicialización de atributos del bot
         self._token: str = token
-        self._name: str = name.format(choice(botnames))  # Por defecto 'CPU' con un nombre aleatorio
+        self._name: str = f"CPU: {gen_random_name()}"
         self._color: str = self.__fmts[color]
         self._difficulty: str = difficulty
         self.cache: dict | MutableMapping = self._init_cache()
