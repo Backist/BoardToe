@@ -1,13 +1,37 @@
+"""
+Module containing the functions and animations to stream the game through the console.
+
+
+Backest 2022-2024 under GPL 3.0 License. See LICENSE for details.
+"""
+
+import consts 
+import utils
+
 import pybeaut as pb
 import textwrap
-import keyboard
+from contextlib import suppress
+from pynput import keyboard
 from time import sleep
 from random import randint
 from os import get_terminal_size
-
 from getpass import getpass
-from consts import *
-from utils import *
+
+
+class SkipAnimationTrigger:
+    def __init__(self, skip_key: str):
+        self.skip_key = skip_key
+        self.skip_animation = False
+
+    def on_press(self, key):
+        with suppress(AttributeError):   # Ignora teclas especiales
+            if key.char == self.skip_key:
+                self.skip_animation = True
+
+    def start_listener(self):
+        with keyboard.Listener(on_press=self.on_press) as listener:
+            listener.join()
+
 
 
 def padding(width: int): return print(" "*width)
@@ -73,9 +97,15 @@ def reveal_anim(t: str, interval: int | float = 0.03, pause_comma: float = 0.2, 
     # Mensaje de advertencia sobre la tecla de salto
     print(f"[Press '{skip_key.upper()}' to skip.]")
 
+
+    # Iniciar el listener para la tecla de salto
+    animation = SkipAnimationTrigger(skip_key)
+    listener = keyboard.Listener(on_press=animation.on_press)
+    listener.start()
+
     # Revelar el texto poco a poco o saltarlo si se pulsa la tecla de salto
     for char in t:
-        if keyboard.is_pressed(skip_key): 
+        if animation.skip_animation: 
             print("\nSkipping animation...\n")
             return 
         
@@ -94,7 +124,6 @@ def reveal_anim(t: str, interval: int | float = 0.03, pause_comma: float = 0.2, 
     print(pb.Col.reset)
 
 
-    
 
 def _make_box(fields: list[str], color: pb.Col = pb.Col.white, btitle: str = None, 
               enum: bool = False, simplecube: bool = False) -> str:
@@ -123,13 +152,13 @@ def load_menu():
     pb.Cursor.HideCursor()
     loading_anim(randint(2, 3), color= pb.Col.cyan, hc=False)
 
-    cls()    
+    utils.cls()    
     getpass(pb.Colorate.Horizontal(pb.Col.blue_to_cyan, "Press Enter Key to continue. . ."))
-    cls()
+    utils.cls()
 
-    print(pb.Colorate.Horizontal(pb.Col.blue_to_cyan, BANNER))
+    print(pb.Colorate.Horizontal(pb.Col.blue_to_cyan, consts.BANNER))
     padding(3)
-    reveal_anim(SPLASH_TEXT, adjust_content= True, center=True)
+    reveal_anim(consts.SPLASH_TEXT, adjust_content= True, center=True)
     pb.Cursor.ShowCursor()
 
 def config_menu():
@@ -137,6 +166,9 @@ def config_menu():
 
 def load_game():
     config_menu()
-    
-print(pb.Box.SimpleCube(pb.Colorate.Horizontal(pb.Col.blue_to_cyan, "Title", 2, 3)))
-print(pb.Box.DoubleCube(f"{pb.Colorate.Horizontal(pb.Col.blue_to_cyan, 'Title', 2, 3)}"))
+
+
+
+if __name__ == "__main__":
+    print(pb.Box.SimpleCube(pb.Colorate.Horizontal(pb.Col.blue_to_cyan, "Title", 2, 3)))
+    print(pb.Box.DoubleCube(f"{pb.Colorate.Horizontal(pb.Col.blue_to_cyan, 'Title', 2, 3)}"))

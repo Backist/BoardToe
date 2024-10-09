@@ -8,17 +8,16 @@ NOTE: This class can be subclassed,
 and may u want to do this to make other player object neither with special methods nor overriding any Player method.
 """
 
-from utils import *
-from consts import *
-from logger import *
+
+import logger
+import consts
 
 from datetime import datetime
 from typing import MutableMapping
-
 from pybeaut import Col as _Col
 
 
-__all__ = ["Player", "_Col"]
+__all__: list[str] = ["Player"]
 
 
 class Player(object):
@@ -37,7 +36,7 @@ class Player(object):
             raise TypeError(f"@name param must be a string, not {name!r} of type {type(name).__name__}")
         elif not isinstance(token, str):
             raise TypeError(f"@token param must be a string, not {token!r} of type {type(token).__name__}")
-        elif token not in TOKENS:
+        elif token not in consts.TOKENS:
             raise TypeError("@token param is a invalid token. Valid tokens: '⭕' or '❌'")
         elif color not in self.__fmts:
             raise TypeError(f"@color param must be a valid color. Valid colors: {self.__fmts.keys()}")
@@ -62,7 +61,7 @@ class Player(object):
     @property
     def btoken(self) -> int:
         "Return the token as a number (0 for 0, 1 for X) ``(property)``"
-        return 1 if self._token == XTOKEN else 0
+        return 1 if self._token == consts.XTOKEN else 0
     @property
     def cache_keys(self) -> list:
         "Return a list with the cache keys``(property)``"
@@ -137,7 +136,7 @@ class Player(object):
 
         NOTE: ``You may want to overwrite this method in your subclass to adapt it to the needs of the subclass but it MUST ALWAYS RETURN THE SAME VALUE.``
         """
-        _logger = Logger(lang)
+        _logger = logger.Logger(lang)
         t = datetime.now()
         posx = input(_logger.plquestion(3, self.name, self.color).format("X")) 
         #Coloca la coordenada {} (X o Y) idx: 3

@@ -1,9 +1,9 @@
 """Game constants"""
 
-XTOKEN              = "❌"
-OTOKEN              = "⭕"
-EMPTOKEN            = "➖"
-TOKENS              = [XTOKEN, OTOKEN]  #* Util para debug.
+XTOKEN   = "❌"
+OTOKEN   = "⭕"
+EMPTOKEN = "➖"
+TOKENS   = [XTOKEN, OTOKEN]  #* Util para debug.
 
 EMOJI_MAPPING = {
     "gearwheel": "⚙️",

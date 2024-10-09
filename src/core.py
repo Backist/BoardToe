@@ -7,18 +7,18 @@ This module contain the main class of Boardtoe game.
 Copyright 2022-2024 Backist under license GPL 3.0.
 """
 
-from utils import *
-from logger import *
-from consts import EMPTOKEN
-from Player import Player
+import utils
+import logger
 import helpers
+import i18n
 
-from random import choice
-from datetime import datetime
 from collections import namedtuple
+from consts import EMPTOKEN
 from os import get_terminal_size
-
+from datetime import datetime
 from pybeaut import Col as _Col
+from player import Player
+from random import choice
 
 
 
@@ -44,7 +44,7 @@ class BoardGame:
         elif size[0] != size[1] or not 9 <= size[0] * size[1] <= 64:   #3x3 - 8x8 -> Min & max board range
             raise ValueError("The number of rows and columns must be equals or the table size is minor than 3x3 or mayor than 8x8 (Max table size of 8x8)")
 
-        elif game_lang not in AVAILABLE_LANGS:
+        elif game_lang not in i18n.AVAILABLE_LANGS:
             raise TypeError(f"The selected language '{repr(game_lang)}' is not set yet!")
 
         self.rows = self.columns = size[0] or size[1]
@@ -61,12 +61,12 @@ class BoardGame:
         if self.player2.name == "Player":
             self.player2._name = "Player2"
 
-        self.game_lang          = game_lang
-        self._logger: Logger    = Logger(game_lang)
-        self._playing           = False
+        self.game_lang                 = game_lang
+        self._logger: logger.Logger    = logger.Logger(game_lang)
+        self._playing                  = False
 
-        self._party_cache       = self._make_party_cache()
-        self._game_cache        = []
+        self._party_cache = self._make_party_cache()
+        self._game_cache  = []
 
         if show_stats:
             self._party_cache["Bot stats"] = []
@@ -128,7 +128,7 @@ class BoardGame:
         print("\n")     # white line to stylize
         for i, column in enumerate(self.board):
             print(
-                multiple_replace(
+                utils.multiple_replace(
                     f'{" " * (columns // 2 - self.rows // 2)} {i + 1}{column}',
                     (
                         ("'", ""),
@@ -149,11 +149,15 @@ class BoardGame:
     #! PUBLIC METHODS   ----------------------------------------------------------------
     
 
-    def handle_turn(self) -> tuple[int, int]:
+    def handle_turn(self) -> tuple[int, int, bool]:
         "Fuction to manage the turns"
-
+        
+        bot_cannot_turn = False
+        
         if self.actual_turn.is_bot():
-            turn_time, postuple = self.actual_turn.turn(self.board)   
+            turn_time, postuple, draw_detected = self.actual_turn.turn(self.board)
+            if draw_detected: 
+                bot_cannot_turn = True   
         else:
             turn_time, postuple = self.actual_turn.turn(self.game_lang)
 
@@ -169,7 +173,7 @@ class BoardGame:
             return self.handle_turn()
 
         self.turn_time = turn_time     #? Si el turno es valido, entonces se guarda el tiempo, no antes.
-        return posx, posy
+        return posx, posy, bot_cannot_turn
         
 
     def draw_board(self, table, pos: tuple[int, int], player: Player) -> None:
@@ -183,13 +187,13 @@ class BoardGame:
         if table[posx][posy] != -1:
             #? la posicion ya esta cogida, evitamos que tenga que comprobar de que tipo es.
             print(self._logger.error(2).format(pos, table[posx][posy])) #¡Ops! Esa posicion ya esta ocupada. (Posicion: {}, token: {})
-            posx, posy = self.handle_turn()
+            posx, posy, _ = self.handle_turn()
             return self.draw_board(table, (posx, posy), player)
             
         elif table[posx][posy] == player.btoken:
             #? la posicion esta ocupada por una ficha del mismo tipo
             print(self._logger.error(3)) #¡Ya has puesto una ficha en esta posicion!
-            posx, posy = self.handle_turn()
+            posx, posy, _ = self.handle_turn()
             return self.draw_board(table, (posx, posy), player)
 
         table[posx][posy] = player.btoken
@@ -203,79 +207,7 @@ class BoardGame:
         #* para obtener el otro jugador se busca el indice del jugador y se le resta 1.
         return    
 
-    ## .. Funciones que comprueban por cada movimiento si ha habido una victoria o no
-    '''
-    def check_win(self) -> bool:
-        """
-            Metodo que alberga 4 metodos independientes:
-            - Horizontal
-            - Vertical 
-            - Diagonal en tablas par
-            - Diagonal en tablas impar
-        """
-        
-        for subarrays in self.board:
-            if -1 in subarrays:
-                continue
-            elif len(set(subarrays)) == 1:
-                self._save_win_to_cache("Horizontal")
-                return True
-        
-        for i in range(len(self.board)):
-            if (self.board[0][i] == -1 or self.board[-1][i] == -1) or (self.board[-1][i] != self.board[0][i]):
-                continue
-            checks = [self.board[_][i] for _ in range(1, len(self.board)-1)]
-            if all(elem == self.board[0][i] for elem in checks):
-                self._save_win_to_cache("Vertical")
-                return True
-
-        #! Metodo diagonal con impares
-        if len(self.board) % 2 != 0: 
-            token = self.board[(len(self.board)//2)][(len(self.board)//2)]  #? centro de la matriz
-        
-            if token == -1:    #* si el centro de la matriz no es X o 0, no hay ninguna diagonal
-                return False
-
-            if self.board[0][0] == self.board[-1][-1] and self.board[0][0] == token:
-                for i in range(1, len(self.board)-1):  #* evitamos pasar otra vez por las esquinas que sabemos que son iguales. 
-                    if self.board[i][i] != token:
-                        break
-                    elif i == len(self.board)-2:   #* Si la ultima iteracion i es igual a la longitud de la tabla-2, quiere decir que todas las iteraciones anteriores son True, formando una diagonal.
-                        self._save_win_to_cache("Downwards diagonal")
-                        return True
-
-            if self.board[0][-1] == self.board[-1][0] and self.board[0][-1] == token:
-                for i,s in zip(range(len(self.board)-1, 1, -1), range(1, len(self.board)-1), strict=True):
-                    if self.board[i-1][s] != token:
-                        break
-                    elif s == len(self.board)-2:   #* Si la ultima iteracion i es igual a la longitud de la tabla-2, quiere decir que todas las iteraciones anteriores son True, formando una diagonal.
-                        self._save_win_to_cache("Upwards diagonal")
-                        return True
-
-        #! Metodo diagonal con pares
-        else:
-            if self.board[0][0] == -1 or self.board[0][-1] == -1:     #* Si alguna de las esquinas de las diagonales posibles esta vacia, no hay diagonales.
-                return False
-
-            if self.board[0][0] == self.board[-1][-1]:
-                for i in range(1, len(self.board)-1):  #* evitamos pasar otra vez por las esquinas que sabemos que son True
-                    if self.board[i][i] != self.board[0][0]:
-                        break
-                    elif i == len(self.board)-2:   #* Si la ultima iteracion i es igual a la longitud de la tabla-2 
-                        #* (la posicion anterior a la esquina que no cuenta), quiere decir que todas las iteraciones anteriores son True, formando una diagonal.
-                        self._save_win_to_cache("Downwards diagonal")
-                        return True
-
-            if self.board[0][-1] == self.board[-1][0]:
-                for i,s in zip(range(len(self.board)-1,1), range(1, len(self.board)-1)):
-                    if self.board[i][s] != self.board[0][0]:    #* si alguna del medio no es igual a la primera, no es diagonal.
-                        break
-                    elif s == len(self.board)-2:  
-                        self._save_win_to_cache("Upwards diagonal")
-                        return True
-        return False
-    '''        
-    
+    ## .. Funciones que comprueban por cada movimiento si ha habido una victoria o no    
     def check_win(self) -> bool:
         """
         Verifica si se ha ganado la partida revisando:
@@ -396,8 +328,12 @@ class BoardGame:
         return False
 
 
-    def checkDraw(self) -> bool:
-        "Verifica si ha habido un empate. Por ahora solo verifica que ha habido un empate cuando en la tabla no hay mas posiciones libres y nadie a ganado"
+    def check_draw(self) -> bool:
+        """
+        Verifica si ha habido un empate segun la posicion de los tokens de cada jugador. 
+        Por ahora solo verifica que ha habido un empate cuando en la tabla no hay mas posiciones libres y nadie a ganado
+        """
+        
         for i in range(len(self.board)):
             if any(elem == -1 for elem in self.board[i]):
                 break
@@ -417,47 +353,56 @@ class BoardGame:
 
         self._clear_caches()     #* vacia la cache para iniciar una nueva partida, aunque ya se haya limpiado antes.  
 
-        self.board: list[list]          = helpers.replace_matrix([self._make_board()])
-        self._playing: bool             = True
-        self.actual_turn: Player        = choice(self._party_cache["players"])
+        self.board = helpers.replace_matrix([self._make_board()])
+        self._playing = True
+        self.actual_turn = choice(self._party_cache["players"])
 
         try:
             while self._playing:
+                
                 self.partycounter  = datetime.now()
-
                 self._pprint()
-                posx, posy = self.handle_turn()
+                
+                
+                # En handle turn, siempre devolvemos una tercera variable que indica si se ha detectado un empate
+                # Si el bot no es capaz de tirar ficha en su turno, es simbolo de que ha detectado un empate.
+                posx, posy, draw_detected = self.handle_turn()
 
+                if draw_detected:
+                    self._pprint()
+                    print(self._logger.draw(4)) # Empate en el tablero de juego.
+                    break    
+                
                 self.draw_board(self.board, (posx, posy), self.actual_turn)
 
                 if self.check_win():
-                    self.partycounter = round((datetime.now()-self.partycounter).total_seconds())
                     self._pprint()
                     print(f"{self._logger.victory(2).format(self._party_cache['party']['win']['player_name'].upper())}") #¡{} ha ganado!
                     break
 
-                elif self.checkDraw():
-                    self.partycounter = round((datetime.now()-self.partycounter).total_seconds())
+                elif self.check_draw():
                     self._pprint()
-                    print("EMPATE!!")
+                    print(self._logger.draw(4)) # Empate en el tablero de juego.
                     break              
 
-                cls()
+                utils.cls()
 
         except KeyboardInterrupt:
             print(self._logger.runtime(0)) #Se ha finalizado el juego forzosamente.
-            exit()
+            exit(0)
 
-        self.player1.cache["best_timing"]     = min(self.player1.cache["timings"])
-        self.player1.cache["worst_timing"]    = max(self.player1.cache["timings"])
-        self.player2.cache["best_timing"]     = min(self.player2.cache["timings"])
-        self.player2.cache["worst_timing"]    = max(self.player2.cache["timings"])
+        self.partycounter = round((datetime.now()-self.partycounter).total_seconds())
+
+        self.player1.cache["best_timing"]  = min(self.player1.cache["timings"])
+        self.player1.cache["worst_timing"] = max(self.player1.cache["timings"])
+        self.player2.cache["best_timing"]  = min(self.player2.cache["timings"])
+        self.player2.cache["worst_timing"] = max(self.player2.cache["timings"])
 
         self._party_cache["party"]["total_time"] = self.partycounter
         self._game_cache.append(self._party_cache)
-        self._playing = False
         self.show_stats()
-
+        
+        self._playing = False
         self._clear_caches()
 
         

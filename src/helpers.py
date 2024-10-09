@@ -182,7 +182,6 @@ def dgn_check(matrix: list[list[int]], n: int, rt: bool = False) -> tuple[int, l
 
 
 
-
 if __name__ == '__main__':
     models: dict[str, str] = {
         0: [

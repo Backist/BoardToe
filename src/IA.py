@@ -1,18 +1,25 @@
-"""Main bot module"""
+"""
+Player programmed with matrix and mathematical algorithms based on
+the weight of each possible move probability.
 
-import sys as _sys
+This module contains the definition of a Bot for BoardToe.
 
-_sys.path.append("src")
 
+Originally written by TheWisker.
+Copyright TheWisker-Backist 2022-2024 on GPL 3.0 License. See LICENSE for further details.
+"""
+
+
+from pybeaut import Col
 from datetime import datetime
-from os import system
 from random import choice, randint
 from typing import MutableMapping, List, Tuple
-
 from consts import TOKENS
 from helpers import win_check
-from Player import Player, _Col
+from player import Player
 
+
+__all__: List[str] = ["Bot"]
 
 def gen_random_name(size=randint(4,7)):
     vowels = 'aeiou'
@@ -20,14 +27,12 @@ def gen_random_name(size=randint(4,7)):
     
     name = []
     
-    # Alternar entre consonantes y vocales para hacer el nombre legible
     for i in range(size):
         if i % 2 == 0:
             name.append(choice(consonants))
         else:
             name.append(choice(vowels))
     
-    # Capitalizar la primera letra para que parezca un nombre propio
     return ''.join(name).capitalize()
 
 
@@ -36,15 +41,13 @@ class Bot(Player):
     Clase que representa un Bot en el juego.
     En cada turno, se debe llamar a la función turn() para obtener el movimiento que el bot quiere realizar.
     """
-    
-    __fmts: dict = _Col.static_colors_mapping
 
     def __init__(
         self, 
         token: str,
         name: str = None,
-        color: str | _Col = _Col.white,
-        difficulty: str = "Easy",
+        color: str | Col = Col.white,
+        difficulty: str = "Normal",
         custom_doc: str = None
     ):
         """
@@ -56,8 +59,8 @@ class Bot(Player):
             raise TypeError(f"El parámetro @token debe ser una cadena, no {token!r} del tipo {type(token).__name__}")
         elif token not in TOKENS:
             raise TypeError("Token inválido. Los tokens válidos son: '⭕' o '❌'")
-        elif color not in self.__fmts:
-            raise TypeError(f"Color inválido. Los colores válidos son: {self.__fmts.keys()}")
+        elif color not in Col.static_colors_mapping:
+            raise TypeError(f"Color inválido. Los colores válidos son: {Col.static_colors_mapping.keys()}")
         elif difficulty.capitalize() not in {"Easy", "Normal", "Hard", "Imposible"}:
             raise TypeError(
                 "La dificultad debe ser 'Easy', 'Normal', 'Hard' o 'Imposible'."
@@ -65,8 +68,8 @@ class Bot(Player):
 
         # Inicialización de atributos del bot
         self._token: str = token
-        self._name: str = f"CPU: {gen_random_name()}"
-        self._color: str = self.__fmts[color]
+        self._name: str = name or f"CPU: {gen_random_name()}"
+        self._color: str = Col.static_colors_mapping[color]
         self._difficulty: str = difficulty
         self.cache: dict | MutableMapping = self._init_cache()
         self.__custom_doc__ = custom_doc if custom_doc and isinstance(custom_doc, str) else None
@@ -90,12 +93,13 @@ class Bot(Player):
             "predicted_moves": [] # Movimientos predichos (solo para el bot)
         }   
 
-    def turn(self, matrix: List[List[int]]) -> List[float | Tuple[int]]:
+    def turn(self, matrix: List[List[int]]) -> Tuple[float, Tuple[int], bool]:
         """
         Calcula el movimiento del bot basado en el estado actual del tablero (matrix).
         Devuelve el tiempo transcurrido y las coordenadas del movimiento.
         """
         t_start = datetime.now()
+        draw_detected = False
 
         # Filtrar los movimientos del jugador y del bot
         moves = self.__filter_moves(
@@ -110,12 +114,14 @@ class Bot(Player):
         if moves:
             moves = self.__max(moves)
         else:
-            input("EMPATE")  # Empate en el juego
+            # Si no hay movimientos disponibles se detecta un empate.
+            draw_detected = True
+            return [-1, -1, True]
 
         # Seleccionar un movimiento al azar entre las opciones posibles
         x = moves[randint(0, len(moves) - 1)]
 
-        return [t_elapsed, (x[0] + 1, x[1] + 1)]
+        return [t_elapsed, (x[0] + 1, x[1] + 1), draw_detected]
 
 
     # 20-08-2024: Baqueto.
@@ -235,13 +241,13 @@ class Bot(Player):
     Class instantiated on game start as a player,
     each turn the turn() function should be called to get the move that this bot wants to make.
     """
-    __fmts: dict = _Col.static_cols_mapping
+    __fmts: dict = Col.static_cols_mapping
 
     def __init__(
         self, 
         token: str,
         name: str = "CPU {}",
-        color: str | _Col = _Col.white,
+        color: str | Col = Col.white,
         difficulty: str = "Easy",
         custom_doc: str = None
     ):
@@ -251,8 +257,8 @@ class Bot(Player):
             raise TypeError(f"@token param must be a string, not {token!r} of type {type(token).__name__}")
         elif token not in TOKENS:
             raise TypeError("@token param is a invalid token. Valid tokens: '⭕' or '❌'")
-        elif color not in self.__fmts:
-            raise TypeError(f"@color param must be a valid color. Valid colors: {self.__fmts.keys()}")
+        elif color not in Col.static_colors_mapping:
+            raise TypeError(f"@color param must be a valid color. Valid colors: {Col.static_colors_mapping.keys()}")
         elif difficulty.capitalize() not in {"Easy", "Normal", "Hard", "Imposible"}:
             raise TypeError(
                 "@difficulty param must be a valid difficulty. Valid difficulties: 'Easy', 'Normal', 'Hard', 'Imposible'"
@@ -260,7 +266,7 @@ class Bot(Player):
 
         self._token: str = token
         self._name: str = name.format(choice(botnames))     #* default 'CPU'
-        self._color: str = self.__fmts[color]
+        self._color: str = Col.static_colors_mapping[color]
         self._difficulty: str = difficulty
         self.cache: dict | MutableMapping = self._init_cache()
         self.__custom_doc__ = custom_doc if custom_doc and isinstance(custom_doc, str) else None
