@@ -20,9 +20,10 @@ package-mode = false
 
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.10.8"
 pybeaut = "^1.1.1b0"
 pynput = "^1.7.7"
+pyperf = "^2.8.0"
 
 
 [build-system]

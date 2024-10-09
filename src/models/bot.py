@@ -1,23 +1,15 @@
 """
-Player programmed with matrix and mathematical algorithms based on
-the weight of each possible move probability.
-
-This module contains the definition of a Bot for BoardToe.
-
-
 Originally written by TheWisker.
 Copyright TheWisker-Backist 2022-2024 on GPL 3.0 License. See LICENSE for further details.
 """
 
-
+from src.models.player import Player
+from src.consts import TOKENS, TokenID
+from src.helpers import win_check
 from pybeaut import Col
 from datetime import datetime
 from random import choice, randint
 from typing import MutableMapping, List, Tuple
-from consts import TOKENS
-from helpers import win_check
-from player import Player
-
 
 __all__: List[str] = ["Bot"]
 
@@ -44,34 +36,23 @@ class Bot(Player):
 
     def __init__(
         self, 
-        token: str,
-        name: str = None,
-        color: str | Col = Col.white,
+        token: str = TOKENS[TokenID.CIRCLE_RED], # Por defecto es el circulo rojo.
+        name: str = "",
+        color: Col = Col.white,
         difficulty: str = "Normal",
         custom_doc: str = None
     ):
         """
         Inicializa un nuevo bot con los parámetros dados.
         """
-        if name and not isinstance(name, str):
-            raise TypeError(f"El parámetro @name debe ser una cadena, no {name!r} del tipo {type(name).__name__}")
-        elif not isinstance(token, str):
-            raise TypeError(f"El parámetro @token debe ser una cadena, no {token!r} del tipo {type(token).__name__}")
-        elif token not in TOKENS:
-            raise TypeError("Token inválido. Los tokens válidos son: '⭕' o '❌'")
-        elif color not in Col.static_colors_mapping:
-            raise TypeError(f"Color inválido. Los colores válidos son: {Col.static_colors_mapping.keys()}")
-        elif difficulty.capitalize() not in {"Easy", "Normal", "Hard", "Imposible"}:
+        super().__init__(name, token, color)
+        
+        if difficulty.capitalize() not in {"Easy", "Normal", "Hard", "Imposible"}:
             raise TypeError(
                 "La dificultad debe ser 'Easy', 'Normal', 'Hard' o 'Imposible'."
             )
 
-        # Inicialización de atributos del bot
-        self._token: str = token
-        self._name: str = name or f"CPU: {gen_random_name()}"
-        self._color: str = Col.static_colors_mapping[color]
         self._difficulty: str = difficulty
-        self.cache: dict | MutableMapping = self._init_cache()
         self.__custom_doc__ = custom_doc if custom_doc and isinstance(custom_doc, str) else None
 
     def is_bot(self) -> bool:
@@ -93,6 +74,15 @@ class Bot(Player):
             "predicted_moves": [] # Movimientos predichos (solo para el bot)
         }   
 
+    def _clear_cache(self) -> None:
+        "Reload the player cache, makes a new cache."
+        self.cache = self._init_cache()
+    
+    def addmov(self, pos: tuple[int, int], time: float | int) -> None:
+        "Add in a fast method one movement and it's time in the cache"
+        self.cache["movements"].append(pos)
+        self.cache["timings"].append(time)
+    
     def turn(self, matrix: List[List[int]]) -> Tuple[float, Tuple[int], bool]:
         """
         Calcula el movimiento del bot basado en el estado actual del tablero (matrix).
@@ -103,8 +93,8 @@ class Bot(Player):
 
         # Filtrar los movimientos del jugador y del bot
         moves = self.__filter_moves(
-            win_check(matrix, 0 if self._token == TOKENS[0] else 1), 
-            win_check(matrix, self._token), 
+            win_check(matrix, 0 if self.btoken == 1 else 0),   # -- El token del jugador es 0 si el del bot es 1 y viceversa. 
+            win_check(matrix, self.btoken), 
             len(matrix)
         )
         
@@ -180,31 +170,30 @@ class Bot(Player):
 
         return best_move[1]
 
-
-    '''
-    def __filter_moves(self, pmoves: List[Tuple[int, List[List[int]]]], bmoves: List[Tuple[int, List[List[int]]]], d: int) -> List[List[int]] | None:
-        """
-        Filtra los movimientos del bot y del jugador según la dificultad.
-        Retorna los movimientos posibles o None si no hay movimientos válidos.
-        """
-        r: list = []
-        for moves in [pmoves, bmoves]:
-            if moves := [v for v in moves if v]:
-                rr: list = [moves[0][0], moves[0][1]]
-                for v in moves[1:]:
-                    if v:
-                        rr[1] = (
-                            list(v[1])
-                            if rr[0] > v[0]
-                            else list(rr[1]) + list(v[1])
-                            if rr[0] == v[0]
-                            else rr[1]
-                        )
-                        rr[0] = min(rr[0], v[0])
-                r.append(rr)
-        # Retorna la lista de movimientos según la prioridad y dificultad
-        return None if not r else r[0][1] if len(r) == 1 else r[1][1] if r[1][0] < r[0][0] or r[0][0] >= self.__get_difficulty(d) and randint(0, 100) % randint(1, 2) else r[0][1]
-    '''
+    
+    # def __filter_moves(self, pmoves: List[Tuple[int, List[List[int]]]], bmoves: List[Tuple[int, List[List[int]]]], d: int) -> List[List[int]] | None:
+    #     """
+    #     Filtra los movimientos del bot y del jugador según la dificultad.
+    #     Retorna los movimientos posibles o None si no hay movimientos válidos.
+    #     """
+    #     r: list = []
+    #     for moves in [pmoves, bmoves]:
+    #         if moves := [v for v in moves if v]:
+    #             rr: list = [moves[0][0], moves[0][1]]
+    #             for v in moves[1:]:
+    #                 if v:
+    #                     rr[1] = (
+    #                         list(v[1])
+    #                         if rr[0] > v[0]
+    #                         else list(rr[1]) + list(v[1])
+    #                         if rr[0] == v[0]
+    #                         else rr[1]
+    #                     )
+    #                     rr[0] = min(rr[0], v[0])
+    #             r.append(rr)
+    #     # Retorna la lista de movimientos según la prioridad y dificultad
+    #     return None if not r else r[0][1] if len(r) == 1 else r[1][1] if r[1][0] < r[0][0] or r[0][0] >= self.__get_difficulty(d) and randint(0, 100) % randint(1, 2) else r[0][1]
+    
     
     def __get_difficulty(self, d: int) -> int:
         """

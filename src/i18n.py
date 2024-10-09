@@ -1,28 +1,40 @@
-"Static private module that contains all the available languages"
 
-__all__ = ["langs", "AVAILABLE_LANGS"]
 
+__all__ = ["langs", "Languages", "AvialableLangs"]
+
+
+class Languages:
+    SPANISH = "SPANISH"
+    ENGLISH = "ENGLISH"
+    GERMAN = "GERMAN"
+    ITALIAN = "ITALIAN"
+    RUSSIAN = "RUSSIAN"
+    FRENCH = "FRENCH"
+    PORTUGUESE = "PORTUGUESE"
+    JAPANESE = "JAPANESE"
+    CHINESE = "CHINESE"
+    
 langs = {
-    "SPANISH": {
+    Languages.SPANISH: {
             "errors": [
-                "¡Las coordenadas deben ser numeros!",  #0
-                "Las coordenadas deben estar entre 1 y {}",  #1
-                "¡Ops! Esa posicion ya esta ocupada. (Posicion: {}, token: {})",  #2
-                "¡Ya hay una ficha en esta posicion!"  #3
+                "¡Las coordenadas deben ser números!",  # 0
+                "Las coordenadas deben estar entre 1 y {}",  # 1
+                "¡Ops! Esa posición ya está ocupada. (Posición: {}, token: {})",  # 2
+                "¡Ya hay una ficha en esta posición!"  # 3
             ],
             "runtime": [
-                "Se ha finalizado el juego forzosamente."  #0
+                "Se ha finalizado el juego forzosamente."  # 0
             ],
             "game": [
-                "¿En que idioma desea jugar?",  #0
-                "Su idioma es el {}, ¿Correcto?",   #1
-                "¡{} ha ganado el juego!",  #2
-                "Coloca la coordenada {}:  ",  #3
-                "Empate en el tablero de juego."  #4
+                "¿En qué idioma desea jugar?",  # 0
+                "Su idioma es el {}, ¿Correcto?",   # 1
+                "¡{} ha ganado el juego!",  # 2
+                "Coloca la coordenada {} →→ ",  # 3
+                "Empate en el tablero de juego."  # 4
             ],
             "cache": []
         },
-    "ENGLISH": {
+    Languages.ENGLISH: {
             "errors": [
                 "Coordinates must be numbers!", 
                 "The coordinates must be between 1 and {}", 
@@ -36,12 +48,12 @@ langs = {
                 "In which language do you wish to play?", 
                 "Your language is {}, correct?",
                 "{} has won the game!", 
-                "Place the coordinate {}:  ",
-                "Draw on the game board."  #4
+                "Place the coordinate {} →→  ",
+                "Draw on the game board."  # 4
             ],
             "cache": []
         },
-    "GERMAN": {
+    Languages.GERMAN: {
             "errors": [
                 "Koordinaten müssen Zahlen sein!", 
                 "Die Koordinaten müssen zwischen 1 und {} liegen", 
@@ -55,12 +67,12 @@ langs = {
                 "In welcher Sprache möchten Sie spielen?", 
                 "Ihre Sprache ist {}, richtig?",
                 "{} hat das Spiel gewonnen!", 
-                "Platziere die Koordinate {}:  ",
-                "Unentschieden auf dem Spielbrett."  #4
+                "Platziere die Koordinate {} →→  ",
+                "Unentschieden auf dem Spielbrett."  # 4
             ],
             "cache": []
         },
-    "ITALIAN": {
+    Languages.ITALIAN: {
             "errors": [
                 "Le coordinate devono essere numeri!", 
                 "Le coordinate devono essere comprese tra 1 e {}", 
@@ -74,16 +86,16 @@ langs = {
                 "In quale lingua desideri giocare?", 
                 "La tua lingua è {}, giusto?",
                 "{} ha vinto la partita!", 
-                "Posiziona la coordinata {}:  ",
-                "Pareggio sulla tavola di gioco."  #4
+                "Posiziona la coordinata {} →→  ",
+                "Pareggio sulla tavola di gioco."  # 4
             ],
             "cache": []
         },
-    "RUSSIAN": {
+    Languages.RUSSIAN: {
             "errors": [
                 "Координаты должны быть числами!", 
                 "Координаты должны быть между 1 и {}", 
-                "Упс! Эта позиция уже занята (Позиция: {})", 
+                "Упс! Эта позиция уже зан⟶ята (Позиция: {})", 
                 "Упс! В этой позиции уже есть маркер!"
             ],
             "runtime": [
@@ -93,31 +105,31 @@ langs = {
                 "На каком языке вы хотите играть?", 
                 "Ваш язык - {}, верно?",
                 "{} выиграл игру!", 
-                "Поместите координату {}:  ",
-                "Ничья на игровом поле."  #4
+                "Поместите координату {} →→  ",
+                "Ничья на игровом поле."  # 4
             ],
             "cache": []
         },
-    "FRENCH" : {
-            "errors" : [
+    Languages.FRENCH: {
+            "errors": [
                 "Les coordonnées doivent être des nombres !", 
                 "Les coordonnées doivent être comprises entre 1 et {}", 
                 "Oups ! Cette position est déjà occupée (Position : {})", 
                 "Oups ! Il y a déjà un jeton à cette position !" 
             ],
-            "runtime" : [
+            "runtime": [
                 "Le jeu a été interrompu de force." 
             ],
-            "game" : [
+            "game": [
                 "Dans quelle langue voulez-vous jouer ?", 
                 "Votre langue est {}, correct ?",
                 "{} a gagné la partie !", 
-                "Placez la coordonnée {}:  ",
-                "Match nul sur le tableau."  #4
+                "Placez la coordonnée {} →→  ",
+                "Match nul sur le tableau."  # 4
             ],
-            "cache" : []
+            "cache": []
         },
-    "PORTUGUESE": {
+    Languages.PORTUGUESE: {
             "errors": [
                 "As coordenadas devem ser números!", 
                 "As coordenadas têm de ser entre 1 e {}", 
@@ -131,12 +143,12 @@ langs = {
                 "Em que língua deseja jogar?", 
                 "A sua língua é {}, correcto?",
                 "{} ganhou o jogo!", 
-                "Coloque a coordenada {}:  ",
-                "Empate no tabuleiro."  #4
+                "Coloque a coordenada {} →→  ",
+                "Empate no tabuleiro."  # 4
             ],
             "cache": []
         },
-    "JAPANESE": {
+    Languages.JAPANESE: {
             "errors": [
                 "座標は数字でなければなりません！", 
                 "座標は1以上{}以下でなければなりません", 
@@ -151,11 +163,11 @@ langs = {
                 "あなたの言語は{}ですね?",
                 "{}がゲームに勝ちました！", 
                 "座標{}を配置します:  ",
-                "ゲームボードの引き分け。"  #4
+                "ゲームボードの引き分け。"  # 4
             ],
             "cache": []
         },
-    "CHINESE": {
+    Languages.CHINESE: {
             "errors": [
                 "坐标必须是数字！", 
                 "坐标必须在1和{}之间", 
@@ -169,14 +181,11 @@ langs = {
                 "你希望用哪种语言游戏？",
                 "你的语言是{}，对吗？",
                 "{}已经赢得了游戏！",
-                "放置坐标{}: ",
-                "游戏平局。"  #4
+                "放置坐标{} →→ ",
+                "游戏平局。"  # 4
             ],
             "cache": []
         },
 }
 
-
-AVAILABLE_LANGS = list(langs.keys())
-    
-
+AvailableLangs = list(langs.keys())

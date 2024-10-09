@@ -7,7 +7,7 @@ that operate on matrices mainly in different ways.
 Copyright 2022-2024 Backist.
 """
 from copy import deepcopy
-from consts import XTOKEN, OTOKEN, EMPTOKEN 
+from src.consts import GRID_TOKEN 
 
 
 def matrix_view(matrix: list[list[int]]) -> None:
@@ -18,21 +18,26 @@ def matrix_view(matrix: list[list[int]]) -> None:
     return
 
 
-def replace_matrix(mtxs: list[list[list]], _search: list = None, _replace: list = None, reverse: bool = False) -> list[list[list]]:
-    if _search is None:
-        _search = [EMPTOKEN, OTOKEN, XTOKEN]
-    if _replace is None:
-        _replace = [-1, 0, 1]
+def replace_matrix(mtxs: list[list[list]], initial: list = None, replacing: list = None, reverse: bool = False) -> list[list[list]]:
+    
+    if initial is None and replacing is None:
+        # -- Si ambos parametros son nulos, reemplaza con un token vacio (GRID_TOKEN).
+        initial = [GRID_TOKEN]
+        replacing = [-1]
+    else:
+        initial.append(GRID_TOKEN)
+        replacing.append(-1)
+    
     if reverse:
-        _search, _replace = _replace, _search
+        initial, replacing = replacing, initial
     r: list = []
     for mtx in mtxs:
         rr: list = []
         for v in mtx:
             rrr: list = [
                 vv
-                if vv not in _search and _search
-                else _replace[_search.index(vv) if _search else 0]
+                if vv not in initial and initial
+                else replacing[initial.index(vv) if initial else 0]
                 for vv in v
             ]
             rr.append(rrr)

@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run project as a package. Package entry: c${cwd}.",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "src",  
+            "console": "integratedTerminal"
+        }
+    ]
+}

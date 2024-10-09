@@ -1,4 +1,6 @@
 
+
+from src.consts import TOKENS
 from typing import Union, List, Tuple, Dict
 from functools import lru_cache
 from os import system, name
@@ -57,7 +59,8 @@ def multiple_replace(rawstr: str, reml: Tuple[Tuple[str, str]], count: int = -1)
 
 def cls():
     return system("cls") if name == "nt" else system("clear")
-    
+
+
 
 if __name__ == "__main__":
     print(multiple_instcheck((34, '34'), (str), strict=True))

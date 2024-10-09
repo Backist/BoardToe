@@ -5,15 +5,16 @@ Module containing the functions and animations to stream the game through the co
 Backest 2022-2024 under GPL 3.0 License. See LICENSE for details.
 """
 
-import consts 
-import utils
-
 import pybeaut as pb
 import textwrap
+
+from src import consts 
+from src import utils
 from contextlib import suppress
 from pynput import keyboard
 from time import sleep
 from random import randint
+from pybeaut import Col
 from os import get_terminal_size
 from getpass import getpass
 
@@ -53,7 +54,7 @@ def loading_anim(repeats: int = 3, interval: float = 0.1, delay: float = 0.25,
     load_dots_str = "• " * 3 
 
     if hc:
-        pb.pb.Cursor.Hidepb.Cursor()  
+        pb.Cursor.HideCursor()  
 
     for _ in range(repeats):
         for i in range(len(load_dots_str)):
@@ -67,7 +68,7 @@ def loading_anim(repeats: int = 3, interval: float = 0.1, delay: float = 0.25,
     sleep(0.1) 
     
     if hc:
-        pb.pb.Cursor.Showpb.Cursor() 
+        pb.Cursor.ShowCursor() 
 
 
 
@@ -166,7 +167,6 @@ def config_menu():
 
 def load_game():
     config_menu()
-
 
 
 if __name__ == "__main__":

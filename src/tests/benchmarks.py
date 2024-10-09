@@ -1,147 +1,116 @@
-"Main file to benchmark the game performance and game algorithms"
+import pyperf
+from typing import Dict, Tuple, Any
 
-from timeit import Timer
 
+
+# Definición de la tabla inicial
 table = [
-        ["0", "0", "-"],
-        ["X", "-", "X"],
-        ["-", "0", "0"]
-    ]
-
-def benchmark(stmt, n=1000, r=3, **kwargs):
-    timer = Timer(stmt, **kwargs)
-    best = min(timer.repeat(r, n))
-
-    return best * 1e6 / n
-
-def run_tests(title, dictests: dict):
-    print(title)
-    print("-"*60)
-    for name, usec in dictests.items():
-        print(f'\t{name:<12} | Time -> {usec:01.4f} μs\n')
-    print("\tConvertion: 1 μs = 0.001 ms = 0.00001 s")
-    print("-"*60)
-    
+    ["0", "0", "-"],
+    ["X", "-", "X"],
+    ["-", "0", "0"]
+]
 
 
-tests1 = {
-    
-    "Empty list method 1": benchmark("[['-' for _ in range(len(table))] for _ in range(len(table))]", globals= {"table": table}),
-    "Empty list method 2": benchmark(
-    """
-for _ in range(0, len(table)):
-    master_table.append([])
-for c in master_table:
-        c.append("-" for _ in range(0, len(table)))
-    """, globals= {"master_table": [], "table": table}
-    ),
-    "Replace by index 1": benchmark(
-    """
-for i in range(len(table)):
+# /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+def empty_list_method_1() -> list:
+    return [['-' for _ in range(len(table))] for _ in range(len(table))]
+
+def empty_list_method_2() -> list:
+    master_table = []
     for _ in range(len(table)):
-        if table[i][_] == "-":
-            table[i][_] = -1
-        elif table[i][_] == "0":
-            table[i][_] = 0
-        elif table[i][_] == "X":
-            table[i][_] = 1
-    """ ,
-        globals= {"table": table}
-    ),
-    "Replace by index 2": benchmark(
-        """
-t = []
-for i in range(len(table)):
-    for _ in range(len(table)):
-        if table[i][_] == "-":
-            t[i][_] = -1
-        elif table[i][_] == "0":
-            t[i][_] = 0
-        elif table[i][_] == "X":
-            t[i][_] = 1
-        """ ,
-        globals= {"table": table}
-    )
-}
+        master_table.append(['-' for _ in range(len(table))])
+    return master_table
 
-bot_tests_suite = {
-    "HCheck 1": benchmark(
+def replace_by_index_1() -> None:
+    for i in range(len(table)):
+        for j in range(len(table)):
+            if table[i][j] == "-":
+                table[i][j] = -1
+            elif table[i][j] == "0":
+                table[i][j] = 0
+            elif table[i][j] == "X":
+                table[i][j] = 1
 
-        """
-def check_matrix(matrix: list[int]) -> bool | list[tuple[int, tuple[int, int]]]:
-    results: list[tuple[int, tuple[int, int]]] = []
+def replace_by_index_2() -> list:
+    t = []
+    for i in range(len(table)):
+        row = []
+        for j in range(len(table)):
+            if table[i][j] == "-":
+                row.append(-1)
+            elif table[i][j] == "0":
+                row.append(0)
+            elif table[i][j] == "X":
+                row.append(1)
+        t.append(row)
+    return t
 
+# Ejemplo de funciones adicionales para los tests del bot
+def check_matrix_1(matrix: list[int]) -> bool | list[tuple[int, tuple[int, int]]]:
+    results = []
     for i, subarray in enumerate(matrix):
-        
         if all(elem == -1 for elem in subarray) or all(elem == subarray[0] for elem in subarray):
             continue
-        elif subarray.count(-1) == 1:   
-            empty_index: int = subarray.index(-1)
+        elif subarray.count(-1) == 1:
+            empty_index = subarray.index(-1)
             if all(x == subarray[i] for x in subarray if subarray.index(x) != empty_index):
-                results.append((subarray[i], (i, empty_index))) #* (jugador que gana, (posicion donde puede ganar))
+                results.append((subarray[i], (i, empty_index)))
     return results
-        """, 
-        n=20
-    ),
-    "HCheck 2": benchmark(
 
-        """
-def check_matrix(matrix: list[int]) -> bool | list[tuple[int, tuple[int, int]]]:
-    results: list[tuple[int, tuple[int, int]]] = []
-
+def check_matrix_2(matrix: list[int]) -> bool | list[tuple[int, tuple[int, int]]]:
+    results = []
     for i, subarray in enumerate(matrix):
-
         if all(elem == -1 for elem in subarray) or all(elem == subarray[0] for elem in subarray):
-            #* si alguna lista es totalmente vacia,  o son iguales, que continue 
             continue
-        elif subarray.count(-1) == 1:   
-            empty_index: int = subarray.index(-1)    # sabemos que las listas tienen al menos un -1, buscamos su indice
+        elif subarray.count(-1) == 1:
+            empty_index = subarray.index(-1)
             if len(set(subarray)) == 2:
-                results.append((subarray[i], (i, empty_index))) #* (jugador que gana, [posicion donde puede ganar])
+                results.append((subarray[i], (i, empty_index)))
     return results
-        """, 
-        n=2000
-    ),
 
-    "Rotate index tuple2list convertion": benchmark(
-
-        """
-def rotate_index(index: list[tuple[int, int]], depth: int) -> list[tuple[int, int]]:
-    assert isinstance(index, list) or not index, "@index param must be list with indexs"
-
-    if len(index) < 1:
+def rotate_index_tuple2list(index: list[tuple[int, int]], depth: int) -> list[tuple[int, int]]:
+    if not index:
         return None
-    
     index = [list(i) for i in index]
     for i in index:
         temp = i[1]
         i[1] = i[0]
-        i[0] = depth-1-temp
-        index[index.index(i)] = i
+        i[0] = depth - 1 - temp
     return [tuple(i) for i in index]
-        """,
-        n= 20
-    ),
 
-    "Rotate index without convertion": benchmark(
-
-        """
-def rotate_index(index: list[list[int, int]], depth: int) -> list[tuple[int, int]]:
-    assert isinstance(index, list) or not index, "@index param must be list with indexs"
-
-    if len(index) < 1:
+def rotate_index_without_conversion(index: list[list[int, int]], depth: int) -> list[tuple[int, int]]:
+    if not index:
         return None
-    
     for i in index:
         temp = i[1]
         i[1] = i[0]
-        i[0] = depth-1-temp
-        index[index.index(i)] = i
+        i[0] = depth - 1 - temp
     return index
-        """,
-        n= 20
-    ),
-}
-        
-run_tests("Pruebas 1", tests1)
-run_tests("Bot Suite (Core)", bot_tests_suite)
+
+
+# /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+def run_benchmark() -> None:
+    """
+    Executes a series of performance benchmarks using the pyperf library.
+
+    This function sets up a benchmarking runner and defines various test functions to measure their performance. 
+    It includes benchmarks for methods that operate on empty lists and those that manipulate matrices, 
+    allowing for performance comparisons across different implementations.
+    """
+
+    runner = pyperf.Runner()
+
+    # Definir los tests
+    runner.bench_func('Empty list method 1', empty_list_method_1)
+    runner.bench_func('Empty list method 2', empty_list_method_2)
+    runner.bench_func('Replace by index 1', replace_by_index_1)
+    runner.bench_func('Replace by index 2', replace_by_index_2)
+
+    # Agregar más pruebas
+    runner.bench_func('Check matrix 1', check_matrix_1, table)
+    runner.bench_func('Check matrix 2', check_matrix_2, table)
+
+
+if __name__ == "__main__":
+    run_benchmark()

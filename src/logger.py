@@ -1,8 +1,9 @@
 
-import i18n
-from pybeaut import Col
-from consts import EMOJI_MAPPING as EM
+import unicodedata
 
+from src import i18n
+from src.consts import EMOJIS, EmojiID
+from pybeaut import Col, Banner, Cursor
 
 __all__: list[str] = ["Logger"]
 
@@ -25,28 +26,26 @@ __all__: list[str] = ["Logger"]
 class Logger:
     
     loggers: dict[str, list[str, str]] = {
-        "errors":       [Col.blue, f"[{EM['gearwheel']} ][{EM['megaphone']}] ",   Col.red],
-        "runtime":      [Col.blue, f"[{EM['megaphone']} ][{EM['exclamation']}] ", Col.yellow],
-        "game":     	[Col.blue, f"[{EM['cup']} ][{EM['first_medal']}] ",       Col.cyan],
-        "draw":         [Col.gray, f"[{EM['tie']} ][{EM['loudspeaker']}] ",       Col.gray],
-        "victory":      [Col.blue, f"[{EM['cup']} ][{EM['first_medal']}] ",       Col.cyan],
-        "message":      [Col.blue, f"[{EM['gearwheel']} ][{EM['loudspeaker']}] ", Col.white],
-        "question":     [Col.blue, f"[{EM['gearwheel']} ][{EM['question']}] ",    Col.white],
+        "errors":       [Col.blue, f"[{EMOJIS[EmojiID.GEARWHEEL]} ][{EMOJIS[EmojiID.MEGAPHONE]}] ",   Col.red],
+        "runtime":      [Col.blue, f"[{EMOJIS[EmojiID.MEGAPHONE]} ][{EMOJIS[EmojiID.EXCLAMATION]}] ", Col.yellow],
+        "game":         [Col.blue, f"[{EMOJIS[EmojiID.CUP]} ][{EMOJIS[EmojiID.FIRST_MEDAL]}] ",       Col.cyan],
+        "draw":         [Col.gray, f"[{EMOJIS[EmojiID.TIE]} ][{EMOJIS[EmojiID.LOUDSPEAKER]}] ",       Col.gray],
+        "victory":      [Col.blue, f"[{EMOJIS[EmojiID.CUP]} ][{EMOJIS[EmojiID.FIRST_MEDAL]}] ",       Col.cyan],
+        "message":      [Col.blue, f"[{EMOJIS[EmojiID.GEARWHEEL]} ][{EMOJIS[EmojiID.LOUDSPEAKER]}] ", Col.white],
+        "question":     [Col.blue, f"[{EMOJIS[EmojiID.GEARWHEEL]} ][{EMOJIS[EmojiID.QUESTION]}] ",    Col.white],
     }
 
-    def __init__(self, lang: str = "ENGLISH"):
+    def __init__(self, lang: i18n.Languages = i18n.Languages.ENGLISH):
         self.lang = lang
         
     @staticmethod 
     def available_loggers():
-        return str(Logger.self.loggers)
+        return str(Logger.loggers)
 
     @staticmethod
-    def _get_phrase(level: str, index: int, lang: str = "ENGLISH") -> str:
+    def _get_phrase(level: str, index: int, lang: i18n.Languages = i18n.Languages.ENGLISH) -> str:
         "Retorna la frase del indice del nivel e idioma pasado."
-        if lang not in i18n.AVAILABLE_LANGS:
-            raise KeyError(f"{lang!r} is not a valid language")
-        return i18n.langs[lang.upper()][level.lower()][index]
+        return i18n.langs[lang][level.lower()][index]
 
     @staticmethod
     def phrase(p: str, logger: list[str]):
@@ -121,17 +120,38 @@ class Logger:
         if logger not in self.loggers.values():
             raise TypeError("@logger param must be a valid logger type.")
         return f"\n{logger[0]+logger[1]}{logger[2]+self._get_phrase(level, index, self.lang)+Col.reset}"
-
-
+    
 
 if __name__ == "__main__":
+
+    def crear_caja(frase):
+        # Determinar el tamaño de la caja
+        longitud = len(frase)+4  # Se suman 2 para los espacios en blanco
+
+        return (
+            '╭' + '─' * (longitud) + '╮' + '\n'
+            f'│  {frase}  │' + '\n'
+            '╰' + '─' * (longitud) + '╯' + '\n'
+        )
+
+
+    def calculate_width(text):
+        total_width = 0
+        for char in text:
+            # Obtener la categoría del carácter
+            if unicodedata.category(char) in ('So', 'Cn', 'Lo', 'Lu', 'Ll', 'Lt', 'Lm', 'Lo'):
+                # Consideramos caracteres de ancho completo (ej: japonés, chino)
+                total_width += 2 if unicodedata.combining(char) == 0 else 1
+            else:
+                total_width += 1  # Asumimos ancho medio para otros caracteres
+        return total_width
+
     def run_test():
-        print(f"{Col.red}[TEST] Testing self.loggers ...{Col.reset}")
+        print(f"{Col.red}[TEST] Testing Loggers ...{Col.reset}")
         
-        for lang, content in i18n.items():
+        for lang, content in i18n.langs.items():
             print(f"\n{Col.red}[TEST] Testing {lang} ...{Col.reset}\n\n")
             for level, lst in content.items():
                 for phrase in lst:
-                    print(Logger(lang).logger(level, lst.index(phrase), Logger.loggers[level]))
-
+                    print(f"{Col.red}{crear_caja(Logger(lang).logger(level, lst.index(phrase), Logger.loggers[level]))}{Col.reset}")
     run_test()

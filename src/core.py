@@ -7,19 +7,29 @@ This module contain the main class of Boardtoe game.
 Copyright 2022-2024 Backist under license GPL 3.0.
 """
 
-import utils
-import logger
-import helpers
-import i18n
+
+
+from src import utils
+from src import  logger
+from src import helpers
+from src import i18n
+from src.consts import GRID_TOKEN
+from src.models.player import Player
 
 from collections import namedtuple
-from consts import EMPTOKEN
 from os import get_terminal_size
 from datetime import datetime
 from pybeaut import Col as _Col
-from player import Player
 from random import choice
 
+
+class BoardSize:
+    _3X3 = (3,3)
+    _4X4 = (4,4)
+    _5X5 = (5,5)
+    _6X6 = (6,6)
+    _7X7 = (7,7)
+    _8X8 = (8,8)
 
 
 class BoardGame:
@@ -29,41 +39,46 @@ class BoardGame:
 
     def __init__(
         self, 
-        size: tuple[int, int],
+        size: BoardSize | tuple[int, int],
         _player1: Player,
         _player2: Player,
-        game_lang: str = "SPANISH",
+        game_lang: i18n.Languages = i18n.Languages.SPANISH,
         show_stats: bool = True
 
     ):
         
-        if not isinstance(size, (tuple, list)):
-            raise TypeError("@size must be a tuple or list containing w numerical values (rows and columns)")
-        elif not all(isinstance(e, int) for e in size) or len(size) != 2:
-            raise TypeError("The list have more than 2 values or rows and columns must be a numerical parameters")
-        elif size[0] != size[1] or not 9 <= size[0] * size[1] <= 64:   #3x3 - 8x8 -> Min & max board range
-            raise ValueError("The number of rows and columns must be equals or the table size is minor than 3x3 or mayor than 8x8 (Max table size of 8x8)")
+        # -- Checks --
+        if not isinstance(size, tuple) and len(size) != 2 and 3>size[0]>8 or 3>size[1]>8:
+            raise ValueError("@size must be a instance of Boardsize class.")
+        if game_lang not in i18n.AvailableLangs:
+            raise ValueError("@game_lang must be a instance of Language class.")
 
-        elif game_lang not in i18n.AVAILABLE_LANGS:
-            raise TypeError(f"The selected language '{repr(game_lang)}' is not set yet!")
 
+        self.player1: Player = _player1
+        self.player2: Player = _player2
+        self.game_lang = game_lang
         self.rows = self.columns = size[0] or size[1]
-        self.board              = None
 
-        self.player1: Player    = _player1
-        self.player2: Player    = _player2
+        # -- Initialize instance atributes --
+        self._playing = False
+        self.board = None
+        self.actual_turn: Player = None
+
+        # -- Asignar un identificador de ficha a cada jugador --
+        # -- Este enfoque lo que nos permite es identificar la ficha del jugador con un 1 o un 0
+        # -- sin importar el tipo de ficha que el jugador este viendo en el tablero.
+        # -- Cada jugador es una instancia distinta, asique pueden llamarse igual pero seran diferentes.
+        self.player1.btoken = 0
+        self.player2.btoken = 1
 
 
-        if self.player1.token == self.player2.token:
-            raise ValueError(f"The players have the same token ({self.player1.token!r})!!")
+        # -- Initialize logger --
+        self._logger: logger.Logger = logger.Logger(game_lang)
+
         if self.player1.name == "Player":
             self.player1._name = "Player1"
         if self.player2.name == "Player":
             self.player2._name = "Player2"
-
-        self.game_lang                 = game_lang
-        self._logger: logger.Logger    = logger.Logger(game_lang)
-        self._playing                  = False
 
         self._party_cache = self._make_party_cache()
         self._game_cache  = []
@@ -74,6 +89,11 @@ class BoardGame:
     @property
     def playing(self):
         return self._playing
+
+    @playing.setter
+    def playing(self, new_state: bool) -> None:
+        "Define si la partida esta en juego."
+        self._playing = new_state
 
     def _make_party_cache(self) -> dict[str,]:
         "Makes a party cache."
@@ -87,13 +107,25 @@ class BoardGame:
             }
         }
 
-
-    def _clear_caches(self) -> None:
-        "Limpia la cache."
+    def _clear_caches(self, only_party: bool = False) -> None:
+        """
+        Limpia la cache de la partida y de cada jugador.
+        
+        Si ``@only_party`` es ``True``, solo la cache de la partida se limpia.
+        """
+        
+        if only_party:
+            self._party_cache = self._make_party_cache()
+            return
+            
         self.player1._clear_cache()
         self.player2._clear_cache()
-        self._party_cache   = self._make_party_cache()
+        self._party_cache = self._make_party_cache()
 
+    def _save_win_to_cache(self, method: str):
+        self._party_cache["party"]["win"] = {"method": method}
+        self._party_cache["party"]["win"]["player_name"] = self._party_cache["party"]["movements"][-1][1] 
+        #? index[1] Nombre del jugador dentro de Movimient namedtuple.
 
     def _make_board(self) -> list:
         """``Metodo privado para crear una tabla vacia.``
@@ -110,26 +142,23 @@ class BoardGame:
             Despues: 
             >>> t = [['-' for _ in range(len(table))] for _ in range(len(table))]"""
 
-        return [[EMPTOKEN for _ in range(self.rows)] for _ in range(self.columns)]
-
-
-    def _save_win_to_cache(self, method: str):
-        self._party_cache["party"]["win"] = {"method": method}
-        self._party_cache["party"]["win"]["player_name"] = self._party_cache["party"]["movements"][-1][1]  
-        #? 1 es el indice del nombre del jugador dentro de la namedtuple de Movimient
-
+        return [[GRID_TOKEN for _ in range(self.rows)] for _ in range(self.columns)]
 
     #! RETOCAR LA FUNCION
     def _pprint(self) -> None:
         "Prints the table in a pretty way (without colons and token-colored)"
 
-        self.board = helpers.replace_matrix([self.board], reverse=True) #? la transformamos a caracteres (esta en numeros)
+        self.board = helpers.replace_matrix([self.board], 
+                                            initial=[self.player1.token, self.player2.token], replacing=[self.player1.btoken, self.player2.btoken],
+                                            reverse=True) #? la transformamos a caracteres (esta en numeros)
+        
         columns, lines = get_terminal_size().columns, get_terminal_size().lines
         print("\n")     # white line to stylize
-        for i, column in enumerate(self.board):
+        for i, column in enumerate(self.board, 1):
             print(
+                "═"*(len(self.board)-6),
                 utils.multiple_replace(
-                    f'{" " * (columns // 2 - self.rows // 2)} {i + 1}{column}',
+                    f'{" " * (columns // 2 - self.rows // 2)} {i}{column}',
                     (
                         ("'", ""),
                         (",", "  "),
@@ -140,15 +169,17 @@ class BoardGame:
             )
         print("\n")     # white line to stylize
 
-        self.board = helpers.replace_matrix([self.board]) #? la transformamos a numeros de nuevo
+        self.board = helpers.replace_matrix([self.board], 
+                            initial=[self.player1.token, self.player2.token], replacing=[self.player1.btoken, self.player2.btoken]) 
+        #? la transformamos a numeros de nuevo
 
-    def show_stats(self) -> str | dict[str,]:
-        print(self._party_cache)
+    def show_stats(self):
+        from pprint import pprint
+        pprint(self._party_cache)
         
 
-    #! PUBLIC METHODS   ----------------------------------------------------------------
     
-
+    # ** Public methods **
     def handle_turn(self) -> tuple[int, int, bool]:
         "Fuction to manage the turns"
         
@@ -207,7 +238,7 @@ class BoardGame:
         #* para obtener el otro jugador se busca el indice del jugador y se le resta 1.
         return    
 
-    ## .. Funciones que comprueban por cada movimiento si ha habido una victoria o no    
+    # .. Funciones que comprueban por cada movimiento si ha habido una victoria o no    
     def check_win(self) -> bool:
         """
         Verifica si se ha ganado la partida revisando:
@@ -223,14 +254,9 @@ class BoardGame:
             return True
         if self._check_vertical_win():
             return True
-        if len(self.board) % 2 == 0:
-            # Tablas de tamaño par
-            if self._check_diagonal_even_board_win():
-                return True
-        elif self._check_diagonal_odd_board_win():
+        if len(self.board) % 2 == 0 and self._check_diagonal_even_board_win():
             return True
-        
-        return False
+        return bool(self._check_diagonal_odd_board_win())
 
     def _check_horizontal_win(self) -> bool:
         """
@@ -326,19 +352,17 @@ class BoardGame:
                     return True
 
         return False
-
-
+    
     def check_draw(self) -> bool:
         """
         Verifica si ha habido un empate segun la posicion de los tokens de cada jugador. 
         Por ahora solo verifica que ha habido un empate cuando en la tabla no hay mas posiciones libres y nadie a ganado
         """
-        
+
         for i in range(len(self.board)):
             if any(elem == -1 for elem in self.board[i]):
                 break
             if i == len(self.board)-1:
-                self._save_win_to_cache("Draw")
                 return True
 
         empty_locs = sum(
@@ -346,23 +370,25 @@ class BoardGame:
             for i, s in zip(range(len(self.board)), range(0, len(self.board), -1))
         )
         return False
-                
-        
-    def init_game(self) -> str | None:
+
+    
+    
+    def init_game(self, clear_cache_when_finish: bool = True) -> str | None:
         "Game loop flow, unless you cancel the game or one player win, the game will be cancelled"
 
-        self._clear_caches()     #* vacia la cache para iniciar una nueva partida, aunque ya se haya limpiado antes.  
+        if clear_cache_when_finish:
+            self._clear_caches()     #* vacia la cache para iniciar una nueva partida, aunque ya se haya limpiado antes.  
 
+        self.playing = True
         self.board = helpers.replace_matrix([self._make_board()])
-        self._playing = True
         self.actual_turn = choice(self._party_cache["players"])
 
         try:
-            while self._playing:
-                
+            while self.playing:
+                print(helpers.matrix_view(helpers.replace_matrix([self.board], 
+                                            initial=[self.player1.token, self.player2.token], replacing=[self.player1.btoken, self.player2.btoken]))) #? la transformamos a caracteres (esta en numeros)
                 self.partycounter  = datetime.now()
                 self._pprint()
-                
                 
                 # En handle turn, siempre devolvemos una tercera variable que indica si se ha detectado un empate
                 # Si el bot no es capaz de tirar ficha en su turno, es simbolo de que ha detectado un empate.
@@ -402,10 +428,15 @@ class BoardGame:
         self._game_cache.append(self._party_cache)
         self.show_stats()
         
-        self._playing = False
+        self.playing = False
         self._clear_caches()
 
         
 
 if __name__ == "__main__":
-    ...
+    
+    player1 = Player("❌", "Alvaritow", "red")
+    player2 = Player("⭕", "Fanico", "green")
+
+    test = BoardGame(BoardSize._4X4, player1, player2) 
+
