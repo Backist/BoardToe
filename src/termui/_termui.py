@@ -5,16 +5,18 @@ Module containing the functions and animations to stream the game through the co
 Backest 2022-2024 under GPL 3.0 License. See LICENSE for details.
 """
 
+from os import system, name
+from click import secho, echo, echo_via_pager, confirm, pause
 import pybeaut as pb
 import textwrap
 
-from src import consts 
+from src.termui import banners
+from src import constants 
 from src import utils
 from contextlib import suppress
 from pynput import keyboard
 from time import sleep
 from random import randint
-from pybeaut import Col
 from os import get_terminal_size
 from getpass import getpass
 
@@ -125,7 +127,8 @@ def reveal_anim(t: str, interval: int | float = 0.03, pause_comma: float = 0.2, 
     print(pb.Col.reset)
 
 
-
+def cls():
+    return system("cls") if name == "nt" else system("clear")
 def _make_box(fields: list[str], color: pb.Col = pb.Col.white, btitle: str = None, 
               enum: bool = False, simplecube: bool = False) -> str:
  
@@ -153,13 +156,13 @@ def load_menu():
     pb.Cursor.HideCursor()
     loading_anim(randint(2, 3), color= pb.Col.cyan, hc=False)
 
-    utils.cls()    
+    cls()    
     getpass(pb.Colorate.Horizontal(pb.Col.blue_to_cyan, "Press Enter Key to continue. . ."))
-    utils.cls()
+    cls()
 
-    print(pb.Colorate.Horizontal(pb.Col.blue_to_cyan, consts.BANNER))
+    print(pb.Colorate.Horizontal(pb.Col.blue_to_cyan, banners.BANNER))
     padding(3)
-    reveal_anim(consts.SPLASH_TEXT, adjust_content= True, center=True)
+    reveal_anim(constants.SPLASH_TEXT, adjust_content= True, center=True)
     pb.Cursor.ShowCursor()
 
 def config_menu():

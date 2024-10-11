@@ -1,6 +1,4 @@
 
-
-from src.consts import TOKENS
 from typing import Union, List, Tuple, Dict
 from functools import lru_cache
 from os import system, name
@@ -34,7 +32,6 @@ def multiple_instcheck(vars: tuple, checks: Union[Tuple, None], manual_check: li
     return all(elem == manual_check for elem in vars)
 
 
-
 def get_key(rawDict: Dict, value, strict: bool = True) -> Union[Exception, None]:
     """Get a dictionary item through the key. 
     - If ``strict`` param is give (by deafult) an exception will be raised
@@ -56,11 +53,6 @@ def multiple_replace(rawstr: str, reml: Tuple[Tuple[str, str]], count: int = -1)
     for i in reml:
         rawstr = rawstr.replace(i[0], i[1], count)
     return rawstr
-
-def cls():
-    return system("cls") if name == "nt" else system("clear")
-
-
 
 if __name__ == "__main__":
     print(multiple_instcheck((34, '34'), (str), strict=True))

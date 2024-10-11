@@ -24,6 +24,8 @@ python = ">=3.10.8"
 pybeaut = "^1.1.1b0"
 pynput = "^1.7.7"
 pyperf = "^2.8.0"
+ruff = "^0.6.9"
+blessed = "^1.20.0"
 
 
 [build-system]

@@ -3,24 +3,19 @@ Meteclass interface that represents a Player in Boardtoe.
 
 Copyright Backist 2022-2024 on GPL 3.0 License. See LICENSE for further details.
 """
-
-from src import utils
-from src.consts import TOKENS
-
-from abc import ABC, abstractmethod
-from datetime import datetime
-from typing import MutableMapping
-from pybeaut import Col
-
-
-
 __all__: list[str] = ["Player"]
+
+from src.constants import TOKENS
+from abc import ABC, abstractmethod
+from pybeaut import Col
 
 
 def is_valid_token(token: str):
     return token in TOKENS.values()
 
+
 class Player(ABC):
+    
     def __init__(self, name: str, token: str, color: 'Col'):
         
         # -- type checks --
@@ -43,16 +38,11 @@ class Player(ABC):
         
 
     @property
-    def name(self) -> str:
-        return self._name
-
+    def name(self) -> str: return self._name
     @property
-    def token(self) -> str:
-        return self._token
-
+    def token(self) -> str: return self._token
     @property
-    def color(self) -> Col:
-        return self._color
+    def color(self) -> Col: return self._color
     
     @property
     def btoken(self) -> int:
@@ -70,7 +60,7 @@ class Player(ABC):
     def turn(self):
         """Este método debe ser implementado por las subclases."""
         pass
-
+    
     @abstractmethod
     def _init_cache(self):
         """Este metodo debe ser implementado por las subclases."""
@@ -82,7 +72,7 @@ class Player(ABC):
         pass
 
     @abstractmethod
-    def addmov(self, pos: tuple[int, int], time: float | int) -> None:
+    def addmov(self, pos: tuple[int, int], turn: int, turn_time: float) -> None:
         pass
 
     @staticmethod

@@ -2,10 +2,11 @@
 import unicodedata
 
 from src import i18n
-from src.consts import EMOJIS, EmojiID
-from pybeaut import Col, Banner, Cursor
+from typing import List
+from src.constants import EMOJIS, EmojiID
+from pybeaut import Col
 
-__all__: list[str] = ["Logger"]
+__all__: List[str] = ["Logger"]
 
 
 # "gearwheel": " ⚙️ ",

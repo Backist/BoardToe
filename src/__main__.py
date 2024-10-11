@@ -1,17 +1,17 @@
 
 import pybeaut as pb
+import sys
 
-from src import console
+from src.termui import _termui
 from src.models.bot import Bot
 from src.i18n import AvailableLangs 
 from src.core import BoardGame, BoardSize
-from src.logger import Logger
+from src.termui.logger import Logger
 from src.models.human import Human
 from contextlib import suppress
 
-
 with suppress(KeyboardInterrupt):
-    console.load_menu()
+    _termui.load_menu()
     
 lang = input(pb.Center.XCenter(f"{pb.Col.cyan}{Logger._get_phrase('game', 0)}:  {pb.Col.reset}")).upper() #¿En que idioma desea jugar?
 while lang.upper() not in AvailableLangs:

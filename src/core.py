@@ -9,11 +9,12 @@ Copyright 2022-2024 Backist under license GPL 3.0.
 
 
 
-from src import utils
-from src import  logger
+from src.termui.logger import Logger
 from src import helpers
 from src import i18n
-from src.consts import GRID_TOKEN
+from src.termui._termui import cls
+from src.utils import multiple_replace
+from src.constants import GRID_TOKEN
 from src.models.player import Player
 
 from collections import namedtuple
@@ -34,7 +35,7 @@ class BoardSize:
 
 class BoardGame:
 
-    _movtuple      = namedtuple("Movement", ["token", "player_name", "position", "moviment_time"])
+    _movtuple      = namedtuple("Movement", ["token", "player_name", "position", "moviment_time", "turn"])
     _ptycachetuple = namedtuple("PartyCache", ["dictmap"])
 
     def __init__(
@@ -61,6 +62,7 @@ class BoardGame:
 
         # -- Initialize instance atributes --
         self._playing = False
+        self._turn_counter = 0 # Empezamos con 0 turnos.
         self.board = None
         self.actual_turn: Player = None
 
@@ -73,7 +75,7 @@ class BoardGame:
 
 
         # -- Initialize logger --
-        self._logger: logger.Logger = logger.Logger(game_lang)
+        self._logger = Logger(game_lang)
 
         if self.player1.name == "Player":
             self.player1._name = "Player1"
@@ -103,7 +105,8 @@ class BoardGame:
             "party": {
                 "total_time": 0,
                 "win": False,    #? Cuando un jugador gana, este atributo se convierte en diccionario 
-                "movements": []
+                "movements": [],
+                "total_turns": 0,
             }
         }
 
@@ -125,7 +128,7 @@ class BoardGame:
     def _save_win_to_cache(self, method: str):
         self._party_cache["party"]["win"] = {"method": method}
         self._party_cache["party"]["win"]["player_name"] = self._party_cache["party"]["movements"][-1][1] 
-        #? index[1] Nombre del jugador dentro de Movimient namedtuple.
+        #? Tomamos el nombre del jugador que hizo el movimiento ganador.
 
     def _make_board(self) -> list:
         """``Metodo privado para crear una tabla vacia.``
@@ -157,7 +160,7 @@ class BoardGame:
         for i, column in enumerate(self.board, 1):
             print(
                 "═"*(len(self.board)-6),
-                utils.multiple_replace(
+                multiple_replace(
                     f'{" " * (columns // 2 - self.rows // 2)} {i}{column}',
                     (
                         ("'", ""),
@@ -170,7 +173,7 @@ class BoardGame:
         print("\n")     # white line to stylize
 
         self.board = helpers.replace_matrix([self.board], 
-                            initial=[self.player1.token, self.player2.token], replacing=[self.player1.btoken, self.player2.btoken]) 
+            initial=[self.player1.token, self.player2.token], replacing=[self.player1.btoken, self.player2.btoken]) 
         #? la transformamos a numeros de nuevo
 
     def show_stats(self):
@@ -178,65 +181,73 @@ class BoardGame:
         pprint(self._party_cache)
         
 
-    
     # ** Public methods **
-    def handle_turn(self) -> tuple[int, int, bool]:
+    def handle_turn(self): # 
         "Fuction to manage the turns"
-        
-        bot_cannot_turn = False
+
+        # Sera True cuando el bot no tenga movimientos disponibles.
+        draw_detected = False
         
         if self.actual_turn.is_bot():
-            turn_time, postuple, draw_detected = self.actual_turn.turn(self.board)
+            if hasattr(self.actual_turn, "v2"):
+                time_elapsed, postuple, draw_detected = self.actual_turn.turn(
+                            self.board, self.actual_turn.cache["movements"], self._turn_counter)
+            else:
+                time_elapsed, postuple, draw_detected = self.actual_turn.turn(self.board, self._turn_counter)
+
             if draw_detected: 
-                bot_cannot_turn = True   
+                return -1, -1, -1, draw_detected  # Finalizamos el turno.
         else:
-            turn_time, postuple = self.actual_turn.turn(self.game_lang)
+            time_elapsed, postuple = self.actual_turn.turn(self.game_lang)
 
         try:
             posx, posy = int(postuple[0]), int(postuple[1])
-
         except Exception:
             print(self._logger.error(0)) #Las coordenadas deben ser numeros!
             return self.handle_turn()
 
         if not 1 <= posx <= self.rows or not 1 <= posy <= self.columns:
-            print(self._logger.error(1).format(self.rows)) #Las coordenadas deben estar entre 1 y {}
+            print(self._logger.error(1).format(self.rows)) #3: Las coordenadas deben estar entre 1 y {}
             return self.handle_turn()
 
-        self.turn_time = turn_time     #? Si el turno es valido, entonces se guarda el tiempo, no antes.
-        return posx, posy, bot_cannot_turn
+        self._turn_counter += 1 # -- Sumamos un turno.
+        return posx, posy, time_elapsed, draw_detected
         
 
-    def draw_board(self, table, pos: tuple[int, int], player: Player) -> None:
-        """# Importante:
-            @param ``pos`` es una tupla que describe las coordenadas ``X`` e ``Y``, el orden es sumamente importante.\n
-            Las coordenadas deben estar entre ``[1, board_columns] ∈ x``  --- ``[1, board_rows] ∈ y``
+    def draw_board(self, board, pos: tuple[int, int], player: Player, time_elapsed: float) -> None:
         """
+        Draws the game board by placing a player's token at the specified position.
+
+        Args:
+            board (list[list[int]]): The game board represented as a 2D list.
+            pos (tuple[int, int]): The position on the board where the player wants to place their token.
+            player (Player): The player attempting to make a move.
+            time_elapsed (float): The time elapsed since the player's turn began.
+        """
+
         posx, posy = pos[0]-1, pos[1]-1
 
-  
-        if table[posx][posy] != -1:
+        if board[posx][posy] != -1:
             #? la posicion ya esta cogida, evitamos que tenga que comprobar de que tipo es.
-            print(self._logger.error(2).format(pos, table[posx][posy])) #¡Ops! Esa posicion ya esta ocupada. (Posicion: {}, token: {})
-            posx, posy, _ = self.handle_turn()
-            return self.draw_board(table, (posx, posy), player)
+            print(self._logger.error(2).format(pos, board[posx][posy])) #¡Ops! Esa posicion ya esta ocupada. (Posicion: {}, token: {})
+            posx, posy, time_elapsed, _ = self.handle_turn()
+            return self.draw_board(board, (posx, posy), player)
             
-        elif table[posx][posy] == player.btoken:
+        elif board[posx][posy] == player.btoken:
             #? la posicion esta ocupada por una ficha del mismo tipo
             print(self._logger.error(3)) #¡Ya has puesto una ficha en esta posicion!
-            posx, posy, _ = self.handle_turn()
-            return self.draw_board(table, (posx, posy), player)
+            posx, posy, time_elapsed, _ = self.handle_turn()
+            return self.draw_board(board, (posx, posy), player)
 
-        table[posx][posy] = player.btoken
-
-        #? Guarda el movimiento del jugador en su cache. SOLO LAS COORDENADAS y el TIEMPO
-        player.addmov(pos, self.turn_time)   
-        self._party_cache["party"]["movements"].append(self._movtuple(player.token, player.name, pos, self.turn_time))
+        # -- Asignamos esa casilla al token del jugador actual.
+        board[posx][posy] = player.btoken
+ 
+        self._party_cache["party"]["movements"].append(
+            self._movtuple(player.token, player.name, pos, time_elapsed, self._turn_counter))
         
+        # -- El proximo jugador [de 2 jugadores] es el indice del actual - 1
         _last_turn_index = self._party_cache["players"].index(self.actual_turn)
-        self.actual_turn = self._party_cache["players"][_last_turn_index-1]   
-        #* para obtener el otro jugador se busca el indice del jugador y se le resta 1.
-        return    
+        self.actual_turn = self._party_cache["players"][_last_turn_index-1]    
 
     # .. Funciones que comprueban por cada movimiento si ha habido una victoria o no    
     def check_win(self) -> bool:
@@ -385,21 +396,24 @@ class BoardGame:
 
         try:
             while self.playing:
-                print(helpers.matrix_view(helpers.replace_matrix([self.board], 
-                                            initial=[self.player1.token, self.player2.token], replacing=[self.player1.btoken, self.player2.btoken]))) #? la transformamos a caracteres (esta en numeros)
-                self.partycounter  = datetime.now()
+                
+                # Para debug.
+                # print(helpers.matrix_view(helpers.replace_matrix([self.board], 
+                # initial=[self.player1.token, self.player2.token], replacing=[self.player1.btoken, self.player2.btoken]))) 
+                
+                self.partyclock  = datetime.now()
                 self._pprint()
                 
                 # En handle turn, siempre devolvemos una tercera variable que indica si se ha detectado un empate
                 # Si el bot no es capaz de tirar ficha en su turno, es simbolo de que ha detectado un empate.
-                posx, posy, draw_detected = self.handle_turn()
+                posx, posy, time_elapsed, draw_detected = self.handle_turn()
 
                 if draw_detected:
                     self._pprint()
                     print(self._logger.draw(4)) # Empate en el tablero de juego.
                     break    
                 
-                self.draw_board(self.board, (posx, posy), self.actual_turn)
+                self.draw_board(self.board, (posx, posy), self.actual_turn, time_elapsed)
 
                 if self.check_win():
                     self._pprint()
@@ -411,20 +425,21 @@ class BoardGame:
                     print(self._logger.draw(4)) # Empate en el tablero de juego.
                     break              
 
-                utils.cls()
+                cls()
 
         except KeyboardInterrupt:
             print(self._logger.runtime(0)) #Se ha finalizado el juego forzosamente.
             exit(0)
 
-        self.partycounter = round((datetime.now()-self.partycounter).total_seconds())
+        self.partyclock = round((datetime.now()-self.partyclock).total_seconds())
 
         self.player1.cache["best_timing"]  = min(self.player1.cache["timings"])
         self.player1.cache["worst_timing"] = max(self.player1.cache["timings"])
         self.player2.cache["best_timing"]  = min(self.player2.cache["timings"])
         self.player2.cache["worst_timing"] = max(self.player2.cache["timings"])
 
-        self._party_cache["party"]["total_time"] = self.partycounter
+        self._party_cache["party"]["total_turns"] = self._turn_counter
+        self._party_cache["party"]["total_time"] = self.partyclock
         self._game_cache.append(self._party_cache)
         self.show_stats()
         
