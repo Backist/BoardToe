@@ -38,7 +38,7 @@ Posible implementacion del cache de botico, con improbable analisis de toma de d
 Copyright TheWisker-Backist 2022-2024 on GPL 3.0 License. See LICENSE for further details.
 """
 from src.models.player import Player
-from src.constants import TOKENS, TokenID
+from src.tokens import TOKENS
 from src.helpers import win_check, rotate_matrix
 from pybeaut import Col
 from time import perf_counter_ns
@@ -73,7 +73,7 @@ class Bot(Player):
 
     def __init__(
         self, 
-        token: str = TOKENS[TokenID.CIRCLE_RED], # Por defecto es el circulo rojo.
+        token: str = TOKENS["CIRCLE_RED"], # Por defecto es el circulo rojo.
         name: str = "",
         color: Col = Col.white,
         difficulty: str = "Normal",

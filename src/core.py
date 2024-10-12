@@ -14,7 +14,7 @@ from src import helpers
 from src import i18n
 from src.termui._termui import cls
 from src.utils import multiple_replace
-from src.constants import GRID_TOKEN
+from src.tokens import GRID_TOKEN
 from src.models.player import Player
 
 from collections import namedtuple
@@ -43,7 +43,7 @@ class BoardGame:
         size: BoardSize | tuple[int, int],
         _player1: Player,
         _player2: Player,
-        game_lang: i18n.Languages = i18n.Languages.SPANISH,
+        game_lang: i18n.Languages_ = i18n.Languages_.SPANISH,
         show_stats: bool = True
 
     ):

@@ -40,7 +40,7 @@ Copyright TheWisker-Backist 2022-2024 on GPL 3.0 License. See LICENSE for furthe
 
 
 from src.models.player import Player
-from src.constants import TOKENS, TokenID
+from src.tokens import TOKENS
 from src.helpers import win_check
 from pybeaut import Col
 from time import perf_counter_ns
@@ -74,7 +74,7 @@ class Bot(Player):
 
     def __init__(
         self, 
-        token: str = TOKENS[TokenID.CIRCLE_RED],  # Por defecto es el circulo rojo.
+        token: str = TOKENS["CIRCLE_RED"],  # Por defecto es el circulo rojo.
         name: str = "",
         color: Col = Col.white,
         difficulty: str = "Normal",

@@ -5,20 +5,22 @@ Module containing the functions and animations to stream the game through the co
 Backest 2022-2024 under GPL 3.0 License. See LICENSE for details.
 """
 
-from os import system, name
-from click import secho, echo, echo_via_pager, confirm, pause
-import pybeaut as pb
+
+# from click import secho, echo, echo_via_pager, confirm, pause
+
 import textwrap
 
 from src.termui import banners
+from src.constants import IS_WINDOWS
 from src import constants 
-from src import utils
+from pybeaut import Box, Colorate, Cursor, Col
 from contextlib import suppress
 from pynput import keyboard
 from time import sleep
 from random import randint
-from os import get_terminal_size
+from os import get_terminal_size, system
 from getpass import getpass
+from typing import List, Union
 
 
 class SkipAnimationTrigger:
@@ -38,10 +40,10 @@ class SkipAnimationTrigger:
 
 
 def padding(width: int): return print(" "*width)
-
+def cls(): return system("cls") if IS_WINDOWS else system("clear")
 
 def loading_anim(repeats: int = 3, interval: float = 0.1, delay: float = 0.25, 
-                 color: pb.Colors = pb.Col.cyan, hc: bool = True) -> None:
+                 color: Col = Col.cyan, hc: bool = True) -> None:
     """
     Crea una animación de carga.
 
@@ -56,7 +58,7 @@ def loading_anim(repeats: int = 3, interval: float = 0.1, delay: float = 0.25,
     load_dots_str = "• " * 3 
 
     if hc:
-        pb.Cursor.HideCursor()  
+        Cursor.HideCursor()  
 
     for _ in range(repeats):
         for i in range(len(load_dots_str)):
@@ -70,12 +72,12 @@ def loading_anim(repeats: int = 3, interval: float = 0.1, delay: float = 0.25,
     sleep(0.1) 
     
     if hc:
-        pb.Cursor.ShowCursor() 
+        Cursor.ShowCursor() 
 
 
 
-def reveal_anim(t: str, interval: int | float = 0.03, pause_comma: float = 0.2, pause_dot: float = 0.4, 
-                color: pb.Col = pb.Colors.reset, center: bool = False, adjust_content: bool = True, skip_key: str = 's') -> None:
+def reveal_anim(t: str, interval: Union[int,float] = 0.03, pause_comma: float = 0.2, pause_dot: float = 0.4, 
+                color: Col = Col.reset, center: bool = False, adjust_content: bool = True, skip_key: str = 's') -> None:
     """
     Genera una animación de texto donde las letras se van revelando poco a poco, con la posibilidad de
     saltar la animación pulsando una tecla específica.
@@ -124,12 +126,11 @@ def reveal_anim(t: str, interval: int | float = 0.03, pause_comma: float = 0.2, 
     
     # Asegura el final de animacion correctamente
     # e resetea el color en caso de haber usado uno.
-    print(pb.Col.reset)
+    print(Col.reset)
 
 
-def cls():
-    return system("cls") if name == "nt" else system("clear")
-def _make_box(fields: list[str], color: pb.Col = pb.Col.white, btitle: str = None, 
+
+def _make_box(fields: List[str], color: Col = Col.white, btitle: str = None, 
               enum: bool = False, simplecube: bool = False) -> str:
  
     t = []
@@ -144,26 +145,26 @@ def _make_box(fields: list[str], color: pb.Col = pb.Col.white, btitle: str = Non
     
     if simplecube:
         if color:
-            return pb.Colorate.Horizontal(color, pb.Box.SimpleCube("\n".join(t)))
-        return pb.Box.SimpleCube("".join(t))
+            return Colorate.Horizontal(color, Box.SimpleCube("\n".join(t)))
+        return Box.SimpleCube("".join(t))
     
-    return pb.Colorate.Color(color, pb.Box.DoubleCube(f"{btitle}\n") + pb.Box.DoubleCube("".join(t)) if color else pb.Box.SimpleCube(f"{btitle}\n")+ "\n" + pb.Box.DoubleCube("".join(t)))
+    return Colorate.Color(color, Box.DoubleCube(f"{btitle}\n") + Box.DoubleCube("".join(t)) if color else Box.SimpleCube(f"{btitle}\n")+ "\n" + pb.Box.DoubleCube("".join(t)))
 
 
 def load_menu():
     "Load the splash frame"
 
-    pb.Cursor.HideCursor()
-    loading_anim(randint(2, 3), color= pb.Col.cyan, hc=False)
+    Cursor.HideCursor()
+    loading_anim(randint(2, 3), color= Col.cyan, hc=False)
 
     cls()    
-    getpass(pb.Colorate.Horizontal(pb.Col.blue_to_cyan, "Press Enter Key to continue. . ."))
+    getpass(Colorate.Horizontal(Col.blue_to_cyan, "Press Enter Key to continue. . ."))
     cls()
 
-    print(pb.Colorate.Horizontal(pb.Col.blue_to_cyan, banners.BANNER))
+    print(Colorate.Horizontal(Col.blue_to_cyan, banners.BANNER))
     padding(3)
     reveal_anim(constants.SPLASH_TEXT, adjust_content= True, center=True)
-    pb.Cursor.ShowCursor()
+    Cursor.ShowCursor()
 
 def config_menu():
     ...
@@ -173,5 +174,5 @@ def load_game():
 
 
 if __name__ == "__main__":
-    print(pb.Box.SimpleCube(pb.Colorate.Horizontal(pb.Col.blue_to_cyan, "Title", 2, 3)))
-    print(pb.Box.DoubleCube(f"{pb.Colorate.Horizontal(pb.Col.blue_to_cyan, 'Title', 2, 3)}"))
+    print(Box.SimpleCube(Colorate.Horizontal(Col.blue_to_cyan, "Title", 2, 3)))
+    print(Box.DoubleCube(f"{Colorate.Horizontal(Col.blue_to_cyan, 'Title', 2, 3)}"))

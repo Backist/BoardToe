@@ -9,7 +9,7 @@ Copyright 2022-2024 TheWisker-Backist.
 """
 
 from copy import deepcopy
-from src.constants import GRID_TOKEN 
+from src.tokens import GRID_TOKEN 
 
 
 def matrix_view(matrix: list[list[int]]) -> None:
@@ -32,8 +32,8 @@ def replace_matrix(
         # Si ambos parámetros son nulos, reemplaza con el token vacío (GRID_TOKEN)
         initial, replacing = [GRID_TOKEN], [-1]
     else:
-        initial = initial + [GRID_TOKEN]
-        replacing = replacing + [-1]
+        initial += [GRID_TOKEN]
+        replacing += [-1]
 
     if reverse:
         initial, replacing = replacing, initial
@@ -118,9 +118,7 @@ def reverse_matrix(matrix: list[list[int]], h: bool = True) -> list[list[int]]:
         [1,  1,  1] ------> [1,  1,  1]
         [0,  0,  1] ------> [1,  0,  0]
     """
-    if h:
-        return [row[::-1] for row in matrix]  # Inversión horizontal
-    return matrix[::-1]  # Inversión vertical
+    return [row[::-1] for row in matrix] if h else matrix[::-1]
 
 
 def reverse_index(inx: list[int, int], dpth: int, h: bool = True) -> list[int, int]:
@@ -190,107 +188,4 @@ def dgn_check(matrix: list[list[int]], n: int, rt: bool = False) -> tuple[int, l
 
 
 if __name__ == '__main__':
-    models: dict[str, str] = {
-        0: [
-            [0, 1, -1],
-            [0, 1, -1],
-            [-1, -1, -1]
-        ],
-    }
-
-
-"""
-def transform2matrix(table: list[list], reps: list[tuple] = [("❌", 1), ("⭕", 0), ("➖", -1)], reverse_method: bool = False) -> list:
-    
-    ``Refactoriza una lista bimimensional o superior.``\n
-    - Para hacer el proceso contrario, poner como ``True`` el parametro ``reverse_method``
-
-    ## Parametros:
-
-    - ``@table``: La lista bimimensional o superior.
-    - ``@reps``: Lista conteniendo tuplas contiendo los valores antiguos a los valores nuevos.
-    
-    # er = [  
-    #     ['❌', '➖', '❌'],
-    #     ['⭕', '➖', '❌'],
-    #     ['❌','❌','⭕'],
-    # ]
-    # print(transform2matrix(er))
-    assert isinstance(table, list) and 3 <= len(table), f"Param @matrix must be a list and depth <= 3, no {type(table).__name__}"
-
-    if reverse_method:
-        for t in table:
-            for _ in range(len(table)):
-                for r in reps:
-                    if t[_] == r[1]:
-                        t[_] = r[0]
-                    elif t[_] == r[1]:
-                        t[_] = r[0]
-                    elif t[_] == r[1]:
-                        t[_] = r[0]
-        return table
-        
-    for t in table:
-        for _ in range(len(table)):
-            for r in reps:
-                if t[_] == r[0]:
-                    t[_] = r[1]
-                elif t[_] == r[0]:
-                    t[_] = r[1]
-                elif t[_] == r[0]:
-                    t[_] = r[1]
-    return table
-
-if __name__ == "__main__":
-    from dis import dis
-
-    models: dict[str, str] = {
-
-        1: [
-            ["X", "-", "X"],
-            ["0", "-", "0"],
-            ["X", "0", "X"],
-
-        ],
-        2: [
-            ['0', '-', '0', '0', '0'],
-            ['-', '-', '-', '0', '0'],
-            ['0', '-', '-', '0', '0'],
-            ['0', '0', '-', '-', '-'],
-            ['X', 'X', 'X', 'X', 'X']
-        ],
-        5: [
-            ['0', '-', '0', '0', '0'],
-            ['-', '-', '-', '0', 'X'],
-            ['0', '-', '-', '0', 'X'],
-            ['0', '0', '-', '-', 'X'],
-            ['0', '0', '0', '0', '0']
-        ],
-        3: [
-            [0,  0,   0, 0],
-            [1, 1,  1, -1],
-            [1,  1,   0,  0],
-            [1, -1,  -1,  0]
-        ],
-        4: [
-            ['X', '0', '-', 'X', '0', 'X', '0', '0'],
-            ['-', '-', '0', 'X', 'X', '-', '0', '0'],
-            ['X', '0', 'X', 'X', '-', '0', 'X', '-'],
-            ['X', '0', '0', 'X', '0', '0', 'X', '0'],
-            ['X', '0', '0', '0', 'X', 'X', '-', 'X'],
-            ['X', '0', '-', 'X', '-', 'X', 'X', '-'],
-            ['X', '0', '0', 'X', 'X', '0', 'X', '0'],
-            ['0', '0', 'X', 'X', '0', 'X', '-', 'X']
-        ],
-        6: [
-            [1, -1, 0],
-            [0, -1, 0],
-            [0, -1, 0]
-        ],
-        7: [
-            [2, 3, 1],
-            [1, 2, 3],
-            [3, 1, 2],
-        ]
-} 
-"""
+    from src.utils import gen_model_mtx

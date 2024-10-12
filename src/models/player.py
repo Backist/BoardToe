@@ -5,13 +5,11 @@ Copyright Backist 2022-2024 on GPL 3.0 License. See LICENSE for further details.
 """
 __all__: list[str] = ["Player"]
 
-from src.constants import TOKENS
+
+from src.utils import is_valid_token
 from abc import ABC, abstractmethod
 from pybeaut import Col
 
-
-def is_valid_token(token: str):
-    return token in TOKENS.values()
 
 
 class Player(ABC):

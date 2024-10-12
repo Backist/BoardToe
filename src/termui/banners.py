@@ -30,3 +30,11 @@ BANNER3 = dedent(r"""
             ███████████  ░░░███████░   █████   █████ █████   █████ ██████████      █████    ░░░███████░   ██████████
             ░░░░░░░░░░░     ░░░░░░░    ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░░░░░░      ░░░░░       ░░░░░░░    ░░░░░░░░░░                                                                                                       
 """)
+
+
+SPLASH_TEXT = (
+    "Bienvenido a BoardToe, un juego inspirado en el famoso tres en raya "
+    "pero con la ventaja de poder jugarlo en tableros desde 3x3 hasta 8x8. " 
+    "Además dispone de varios modos de juego diferentes como Jugador vs Jugador "
+    "Jugador vs Maquina o Maquina vs Maquina. "
+)
