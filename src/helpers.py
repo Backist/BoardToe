@@ -9,7 +9,7 @@ Copyright 2022-2024 TheWisker-Backist.
 """
 
 from copy import deepcopy
-from src.tokens import GRID_TOKEN 
+from src.mappings import GRID_TOKEN 
 
 
 def matrix_view(matrix: list[list[int]]) -> None:

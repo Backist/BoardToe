@@ -27,9 +27,6 @@ pyperf = "^2.8.0"
 ruff = "^0.6.9"
 blessed = "^1.20.0"
 windows-curses = "^2.3.3"
-prompt-toolkit = "^3.0.48"
-uni-curses = "^3.1.2"
-urwid = "^2.6.15"
 rich = "^13.9.2"
 
 

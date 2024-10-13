@@ -40,7 +40,7 @@ Copyright TheWisker-Backist 2022-2024 on GPL 3.0 License. See LICENSE for furthe
 
 
 from src.models.player import Player
-from src.tokens import TOKENS
+from src.mappings import TOKENS
 from src.helpers import win_check
 from src.termui.colors import Color
 from time import perf_counter_ns

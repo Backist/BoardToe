@@ -7,25 +7,9 @@ pide entrada de coordenadas al usuario, entre otra información.
 
 from src import i18n
 from src.termui.colors import Color
+from src.mapping import EMOJIS
 from typing import List
 
-
-# Diccionario de Emojis
-EMOJIS = {
-    "GEARWHEEL": "⚙️",
-    "MEGAPHONE": "📢",
-    "LOCK": "🔒",
-    "STOP_SIGNAL": "⛔️",
-    "EXCLAMATION": "❕",
-    "LOUDSPEAKER": "🔊",
-    "TIE": "🤝",
-    "ROBOTIC_ARM": "🦾",
-    "FIRST_MEDAL": "🥇",
-    "CUP": "🏆",
-    "ROBOT": "🤖",
-    "MAGNIFYING_GLASS": "🔍",
-    "QUESTION": "❔",
-}
 
 __all__: List[str] = ["Logger"]
 
@@ -42,6 +26,10 @@ class Logger:
     }
 
     def __init__(self, lang: i18n.Language = i18n.Language.ENGLISH):
+        
+        if not hasattr(i18n.Language, lang):
+            raise TypeError("Language not supported or its not available.")
+        
         self.lang = lang
         
     @staticmethod 
@@ -51,7 +39,7 @@ class Logger:
     @staticmethod
     def get_phrase(context: i18n.Context, index: int, lang: i18n.Language = i18n.Language.ENGLISH) -> str:
         "Wrapper de gphrase."
-        return i18n.gphrase(lang, context, index)
+        return i18n.Translator.gphrase(lang, context, index, needs_format=False)
 
     @staticmethod
     def phrase(p: str, logger: list[str]):
@@ -89,36 +77,22 @@ class Logger:
         assert isinstance(logname, str), "@logname must be a valid string!"
         del self.loggers[logname]
 
-    def error(self, index: int) -> str:
-        return self.logger("errors", self.lang, i18n.Context.ERRORS, index, self.loggers["errors"])
-        
-    def question(self, index: int) -> str:
-        return self.logger("game", self.lang, i18n.Context.GAME, index, self.loggers["question"])
+    def error(self, index: int = 3) -> str: return self.logger(i18n.Context.ERRORS, index, self.loggers["errors"])
+    def token_question(self, index: int = 3) -> str: return self.logger(i18n.Context.GAME, index, self.loggers["question"])
+    def victory(self, index: int = 4) -> str: return self.logger(i18n.Context.GAME, index, self.loggers["victory"])
+    def draw(self, index: int = 5) -> str: return self.logger(i18n.Context.GAME, index, self.loggers["victory"])
+    def info(self, index: int): return self.logger(i18n.Context.INFO, index, self.loggers["message"])
+    def runtime(self, index: int = 3) -> str: return self.logger(i18n.Context.INFO, index, self.loggers["runtime"])
     
-    def plquestion(self, index: int, pln: str, plc: Color) -> str:
+    def plquestion(self, index: int, pln: str, plc: Color) -> str: 
         return f"\n{self.loggers['question'][0]+self.loggers['question'][1]}[{plc+pln+self.loggers['question'][0]}] {self.loggers['question'][2]+self.get_phrase('game', index, self.lang)}"
-
-    def victory(self, index: int = 4) -> str:
-        "Se devuelve un mensaje logger con un mensaje de victoria"
-        return self.logger("game", index, i18n.Context.ERRORS, index, self.loggers["victory"])
     
-    def draw(self, index: int = 5) -> str:
-        "Se devuelve un mensaje logger con un mensaje de empate"
-        return self.logger("game", self.lang, i18n.Context.ERRORS,index, self.loggers["victory"])
-    
-    def message(self, index: int):
-        return self.logger("game", self.lang, i18n.Context.INFO, index, self.loggers["message"])
-
-    def runtime(self, index: int) -> str:
-        "Se devuelve un mensaje logger con un mensaje relacionado con el flujo del juego"
-        return self.logger("runtime", index, self.loggers["runtime"])
-
-    def logger(self, lang: i18n.Language, context: i18n.Context, index: int, logger: list[str]) -> str:
-        assert hasattr(i18n.Language, lang), "This is not a valid level!"
+    def logger(self, context: i18n.Context, index: int, logger: List[str]) -> str:
         assert isinstance(i18n.Context, context), "This context is not valid!!"
+
+        if logger not in list(self.loggers.keys()):
+            raise TypeError("This logger is not registered.")
         
-        if logger not in self.loggers.values():
-            raise TypeError("@logger param must be a valid logger type.")
         return f"\n{logger[0]+logger[1]}{logger[2]+self.get_phrase(context, index, self.lang)+Color.RESET}"
     
 

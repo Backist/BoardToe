@@ -9,10 +9,12 @@ Copyright 2022-2024 Backist under license GPL 3.0.
 
 from src.termui.logger import Logger
 from src import helpers
-from src import i18n
+from src.i18n import Context
+from src.i18n import Language
+from src.i18n import AvailableLangs
 from src.termui._termui import cls
 from src.utils import multiple_replace
-from src.tokens import GRID_TOKEN
+from src.mappings import GRID_TOKEN
 from src.models.player import Player
 
 from collections import namedtuple
@@ -20,6 +22,7 @@ from os import get_terminal_size
 from datetime import datetime
 from pybeaut import Col as _Col
 from random import choice
+from typing import Union, List, Tuple, Dict
 
 
 class BoardSize:
@@ -38,10 +41,10 @@ class BoardGame:
 
     def __init__(
         self, 
-        size: BoardSize | tuple[int, int],
+        size: Union[BoardSize, Tuple[int, int]],
         _player1: Player,
         _player2: Player,
-        game_lang: i18n.Language = i18n.Language.SPANISH,
+        game_lang: Language = Language.SPANISH,
         show_stats: bool = True
 
     ):
@@ -49,7 +52,7 @@ class BoardGame:
         # -- Checks --
         if not isinstance(size, tuple) and len(size) != 2 and 3>size[0]>8 or 3>size[1]>8:
             raise ValueError("@size must be a instance of Boardsize class.")
-        if game_lang not in i18n.AvailableLangs:
+        if game_lang not in AvailableLangs:
             raise ValueError("@game_lang must be a instance of Language class.")
 
 
@@ -201,11 +204,11 @@ class BoardGame:
         try:
             posx, posy = int(postuple[0]), int(postuple[1])
         except Exception:
-            print(self._logger.error(0)) #Las coordenadas deben ser numeros!
+            print(self._logger.error(2)) #Las coordenadas deben ser numeros!
             return self.handle_turn()
 
         if not 1 <= posx <= self.rows or not 1 <= posy <= self.columns:
-            print(self._logger.error(1).format(self.rows)) #3: Las coordenadas deben estar entre 1 y {}
+            print(self._logger.error(2).format(self.rows)) #3: Las coordenadas deben estar entre 1 y {}
             return self.handle_turn()
 
         self._turn_counter += 1 # -- Sumamos un turno.
@@ -227,13 +230,13 @@ class BoardGame:
 
         if board[posx][posy] != -1:
             #? la posicion ya esta cogida, evitamos que tenga que comprobar de que tipo es.
-            print(self._logger.error(2).format(pos, board[posx][posy])) #¡Ops! Esa posicion ya esta ocupada. (Posicion: {}, token: {})
+            print(self._logger.error(3).format(pos, board[posx][posy])) #¡Ops! Esa posicion ya esta ocupada. (Posicion: {}, token: {})
             posx, posy, time_elapsed, _ = self.handle_turn()
             return self.draw_board(board, (posx, posy), player)
             
         elif board[posx][posy] == player.btoken:
             #? la posicion esta ocupada por una ficha del mismo tipo
-            print(self._logger.error(3)) #¡Ya has puesto una ficha en esta posicion!
+            print(self._logger.error(4)) #¡Ya has puesto una ficha en esta posicion!
             posx, posy, time_elapsed, _ = self.handle_turn()
             return self.draw_board(board, (posx, posy), player)
 
@@ -408,25 +411,25 @@ class BoardGame:
 
                 if draw_detected:
                     self._pprint()
-                    print(self._logger.draw(4)) # Empate en el tablero de juego.
+                    print(self._logger.draw()) # Empate en el tablero de juego.
                     break    
                 
                 self.draw_board(self.board, (posx, posy), self.actual_turn, time_elapsed)
 
                 if self.check_win():
                     self._pprint()
-                    print(f"{self._logger.victory(2).format(self._party_cache['party']['win']['player_name'].upper())}") #¡{} ha ganado!
+                    print(f"{self._logger.victory().format(self._party_cache['party']['win']['player_name'].upper())}") #¡{} ha ganado!
                     break
 
                 elif self.check_draw():
                     self._pprint()
-                    print(self._logger.draw(4)) # Empate en el tablero de juego.
+                    print(self._logger.draw()) # Empate en el tablero de juego.
                     break              
 
                 cls()
 
         except KeyboardInterrupt:
-            print(self._logger.runtime(0)) #Se ha finalizado el juego forzosamente.
+            print(self._logger.runtime(3)) #Se ha finalizado el juego forzosamente.
             exit(0)
 
         self.partyclock = round((datetime.now()-self.partyclock).total_seconds())

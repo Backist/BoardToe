@@ -1,13 +1,11 @@
 """
 Funciones misceláneas, sin complicación. 
 """
-
-
 from typing import Union, List, Tuple, Dict, Optional
 from itertools import product
 from random import randint
 from functools import lru_cache
-from src.tokens import TOKENS
+from src.mappings import TOKENS
     
 def multiple_instcheck(vars: Tuple, checks: Optional[Tuple], manual_check: Optional[List] = None, 
                        strict: bool = False) -> Union[bool, Tuple[bool, str]]:

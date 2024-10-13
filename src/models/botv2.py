@@ -38,7 +38,7 @@ Posible implementacion del cache de botico, con improbable analisis de toma de d
 Copyright TheWisker-Backist 2022-2024 on GPL 3.0 License. See LICENSE for further details.
 """
 from src.models.player import Player
-from src.tokens import TOKENS
+from src.mappings import TOKENS
 from src.helpers import win_check, rotate_matrix
 from pybeaut import Col
 from time import perf_counter_ns

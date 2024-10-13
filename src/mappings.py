@@ -22,6 +22,21 @@ TOKENS = {
     "CROSS_RED": "❌"
 }
 
-
 # -- Token reservado para las divisiones del tablero.
 GRID_TOKEN = "➖"
+
+EMOJIS = {
+    "GEARWHEEL": "⚙️",
+    "MEGAPHONE": "📢",
+    "LOCK": "🔒",
+    "STOP_SIGNAL": "⛔️",
+    "EXCLAMATION": "❕",
+    "LOUDSPEAKER": "🔊",
+    "TIE": "🤝",
+    "ROBOTIC_ARM": "🦾",
+    "FIRST_MEDAL": "🥇",
+    "CUP": "🏆",
+    "ROBOT": "🤖",
+    "MAGNIFYING_GLASS": "🔍",
+    "QUESTION": "❔",
+}

@@ -87,20 +87,6 @@ files = [
 ]
 
 [[package]]
-name = "prompt-toolkit"
-version = "3.0.48"
-description = "Library for building powerful interactive command lines in Python"
-optional = false
-python-versions = ">=3.7.0"
-files = [
-    {file = "prompt_toolkit-3.0.48-py3-none-any.whl", hash = "sha256:f49a827f90062e411f1ce1f854f2aedb3c23353244f8108b89283587397ac10e"},
-    {file = "prompt_toolkit-3.0.48.tar.gz", hash = "sha256:d6623ab0477a80df74e646bdbc93621143f5caf104206aa29294d53de1a03d90"},
-]
-
-[package.dependencies]
-wcwidth = "*"
-
-[[package]]
 name = "psutil"
 version = "6.0.0"
 description = "Cross-platform lib for process and system monitoring in Python."
@@ -374,44 +360,6 @@ files = [
 ]
 
 [[package]]
-name = "uni-curses"
-version = "3.1.2"
-description = "Unified Curses Wrapper for Python"
-optional = false
-python-versions = "*"
-files = [
-    {file = "Uni-Curses-3.1.2.tar.gz", hash = "sha256:3389a3766cb63527f92a24d56339cfcbce9b560641e6ed6f0e2e86207d45adce"},
-]
-
-[package.dependencies]
-x256 = "*"
-
-[[package]]
-name = "urwid"
-version = "2.6.15"
-description = "A full-featured console (xterm et al.) user interface library"
-optional = false
-python-versions = ">3.7"
-files = [
-    {file = "urwid-2.6.15-py3-none-any.whl", hash = "sha256:71b3171cabaa0092902f556768756bd2f2ebb24c0da287ee08f081d235340cb7"},
-    {file = "urwid-2.6.15.tar.gz", hash = "sha256:9ecc57330d88c8d9663ffd7092a681674c03ff794b6330ccfef479af7aa9671b"},
-]
-
-[package.dependencies]
-typing-extensions = "*"
-wcwidth = "*"
-
-[package.extras]
-curses = ["windows-curses"]
-glib = ["PyGObject"]
-lcd = ["pyserial"]
-serial = ["pyserial"]
-tornado = ["tornado (>=5.0)"]
-trio = ["exceptiongroup", "trio (>=0.22.0)"]
-twisted = ["twisted"]
-zmq = ["zmq"]
-
-[[package]]
 name = "wcwidth"
 version = "0.2.13"
 description = "Measures the displayed width of unicode strings in a terminal"
@@ -445,17 +393,7 @@ files = [
     {file = "windows_curses-2.3.3-cp39-cp39-win_amd64.whl", hash = "sha256:23b71f3a44cc5a5b92e12d3a519e840e54f8252ff3ef867b630963d5fe7124dd"},
 ]
 
-[[package]]
-name = "x256"
-version = "0.0.3"
-description = "x256: manipulate xterm 256 color codes"
-optional = false
-python-versions = "*"
-files = [
-    {file = "x256-0.0.3.tar.gz", hash = "sha256:f855dbccd91e53f5890283d8203855743827e7eed595d5cf19544ba3d212e001"},
-]
-
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10.8"
-content-hash = "bef6b45294c5926eacf7bd07719d619fa3a5188bd764cb1d8c12fedb1fdcf567"
+content-hash = "33e1889217027e0c54d2b1f4ea9a72adfd8b2e8de29551088b3da85fda73cf7a"

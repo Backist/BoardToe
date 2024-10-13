@@ -3,7 +3,7 @@
         "ERRORS": {
             "1": {"phrase": "Esto no se puede hacer ahora.", "format": false},
             "2": {"phrase": "Las coordenadas deben estar entre 1 y {}", "format": true},
-            "3": {"phrase": "¡Ops! Esa posición ya está ocupada.", "format": false},
+            "3": {"phrase": "¡Ops! Esa posición ya está ocupada. (Pos: {}, Token: {})", "format": false},
             "4": {"phrase": "¡Ya hay una ficha en esta posición!", "format": false},
             "5": {"phrase": "Este idioma no está disponible, seleccione otro.", "format": false},
             "6": {"phrase": "Seleccione una ficha válida entre las mostradas.", "format": false},
