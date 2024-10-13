@@ -1,3 +1,9 @@
+"""
+Este módulo se encarga de llevar el flujo de la entradas de datos del usuario.
+En este caso, la única clase Logger contiene esencialmente "mensajes" que informan de errores,
+pide entrada de coordenadas al usuario, entre otra información.
+"""
+
 
 from src import i18n
 from src.termui.colors import Color
@@ -35,7 +41,7 @@ class Logger:
         "question":     [Color.BLUE, f"[{EMOJIS['GEARWHEEL']} ][{EMOJIS['QUESTION']}] ",    Color.WHITE],
     }
 
-    def __init__(self, lang: i18n.Languages_ = i18n.Languages_.ENGLISH):
+    def __init__(self, lang: i18n.Language = i18n.Language.ENGLISH):
         self.lang = lang
         
     @staticmethod 
@@ -43,9 +49,9 @@ class Logger:
         return str(Logger.loggers)
 
     @staticmethod
-    def _get_phrase(level: str, index: int, lang: i18n.Languages_ = i18n.Languages_.ENGLISH) -> str:
-        "Retorna la frase del indice del nivel e idioma pasado."
-        return i18n.Language[lang][level.lower()][index]
+    def get_phrase(context: i18n.Context, index: int, lang: i18n.Language = i18n.Language.ENGLISH) -> str:
+        "Wrapper de gphrase."
+        return i18n.gphrase(lang, context, index)
 
     @staticmethod
     def phrase(p: str, logger: list[str]):
@@ -84,35 +90,36 @@ class Logger:
         del self.loggers[logname]
 
     def error(self, index: int) -> str:
-        return self.logger("errors", index, self.loggers["errors"])
+        return self.logger("errors", self.lang, i18n.Context.ERRORS, index, self.loggers["errors"])
         
     def question(self, index: int) -> str:
-        return self.logger("game", index, self.loggers["question"])
+        return self.logger("game", self.lang, i18n.Context.GAME, index, self.loggers["question"])
     
     def plquestion(self, index: int, pln: str, plc: Color) -> str:
-        return f"\n{self.loggers['question'][0]+self.loggers['question'][1]}[{plc+pln+self.loggers['question'][0]}] {self.loggers['question'][2]+self._get_phrase('game', index, self.lang)}"
+        return f"\n{self.loggers['question'][0]+self.loggers['question'][1]}[{plc+pln+self.loggers['question'][0]}] {self.loggers['question'][2]+self.get_phrase('game', index, self.lang)}"
 
-    def victory(self, index: int) -> str:
+    def victory(self, index: int = 4) -> str:
         "Se devuelve un mensaje logger con un mensaje de victoria"
-        return self.logger("game", index, self.loggers["victory"])
+        return self.logger("game", index, i18n.Context.ERRORS, index, self.loggers["victory"])
     
-    def draw(self, index: int) -> str:
+    def draw(self, index: int = 5) -> str:
         "Se devuelve un mensaje logger con un mensaje de empate"
-        return self.logger("game", index, self.loggers["victory"])
+        return self.logger("game", self.lang, i18n.Context.ERRORS,index, self.loggers["victory"])
     
     def message(self, index: int):
-        return self.logger("game", index, self.loggers["message"])
+        return self.logger("game", self.lang, i18n.Context.INFO, index, self.loggers["message"])
 
     def runtime(self, index: int) -> str:
         "Se devuelve un mensaje logger con un mensaje relacionado con el flujo del juego"
         return self.logger("runtime", index, self.loggers["runtime"])
 
-    def logger(self, level: str, index: int, logger: list[str]) -> str:
-        assert isinstance(level, str), "This is not a valid level!"
-        assert isinstance(index, int), "Index must be an integer!!"
+    def logger(self, lang: i18n.Language, context: i18n.Context, index: int, logger: list[str]) -> str:
+        assert hasattr(i18n.Language, lang), "This is not a valid level!"
+        assert isinstance(i18n.Context, context), "This context is not valid!!"
+        
         if logger not in self.loggers.values():
             raise TypeError("@logger param must be a valid logger type.")
-        return f"\n{logger[0]+logger[1]}{logger[2]+self._get_phrase(level, index, self.lang)+Color.RESET}"
+        return f"\n{logger[0]+logger[1]}{logger[2]+self.get_phrase(context, index, self.lang)+Color.RESET}"
     
 
 if __name__ == "__main__":
@@ -120,7 +127,7 @@ if __name__ == "__main__":
     def run_test():
         print(f"{Color.RED}[TEST] Testing Loggers ...{Color.RESET}")
         
-        for lang, content in i18n.Language.items():
+        for lang, content in i18n.Languages.items():
             print(f"\n{Color.RED}[TEST] Testing {lang} ...{Color.RESET}\n\n")
             for level, lst in content.items():
                 for phrase in lst:

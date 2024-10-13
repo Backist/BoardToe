@@ -1,3 +1,7 @@
+"""
+Funciones misceláneas, sin complicación. 
+"""
+
 
 from typing import Union, List, Tuple, Dict, Optional
 from itertools import product

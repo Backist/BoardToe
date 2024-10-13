@@ -1,3 +1,9 @@
+"""
+Módulo ligero que contiene clases estáticas con colores para terminales de 8,16 y 256 colores.
+Aunque la dependencia pybeaut también tiene una clase parecida, con estas podemos tener mas eficiencia ya que no están
+apenas sobrecargadas y tenemos el control exacto de los colores que contiene cada clase.
+"""
+
 
 class Color:
     """

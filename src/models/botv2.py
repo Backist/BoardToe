@@ -94,7 +94,7 @@ class Bot(Player):
 
 
     @staticmethod
-    def is_bot(self) -> bool:
+    def is_bot() -> bool:
         """Retorna True indicando que este jugador es un bot."""
         return True
 

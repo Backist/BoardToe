@@ -1,428 +1,424 @@
 {
     "SPANISH": {
-        "ERR1": "Esto no se puede hacer ahora.",
-        "ERR2f": "Las coordenadas deben estar entre 1 y {}",
-        "ERR3": "¡Ops! Esa posición ya está ocupada.",
-        "ERR4": "¡Ya hay una ficha en esta posición!",
-        "ERR5": "Este idioma no esta disponible, seleccione otro.",
-        "ERR6": "Seleccione una ficha válida entre las mostradas.",
-        "ERR7": "¿Desea salir del juego? La partida finalizará.",
-        "ERR8": "Eso no parece ser una coordenada válida.",
-
-        "SPLASH1": "Nombre de jugador",
-        "SPLASH2": "Modo de juego",
-        "SPLASH3": "Tamaño del tablero",
-        "SPLASH4": "Humano vs Humano",
-        "SPLASH5": "Humano vs Bot",
-        "SPLASH6": "Bot vs Bot",
-        "SPLASH7": "Humano vs Humano vs Humano",
-        "SPLASH8": "Bot vs Bot vs Bot",
-        "SPLASH9": "Iniciando partida",
-        
-        "GAME1": "¿En qué idioma desea jugar?",
-        "GAME2f": "Su idioma es el {}, ¿Correcto?",
-        "GAME3f": "Coloca la coordenada {}",
-        "GAME4f": "¡{} ha ganado la partida!",
-        "GAME5": "",
-        "GAME6": "",
-        "GAME7": "",
-        "GAME8": "",
-
-        "INFO1": "¿Mostrar estadisticas?",
-        "INFO2": "Actualizando cache",
-        "INFO3": "Se ha salido del juego forzosamente",
-        "INFO4": "",
-        "INFO5": "",
-        "INFO6": "",
-        "INFO7": "",
-        "INFO8": "",
-        "INFO9": "",
-
-        "MISC1": "Timmer",
-        "MISC2": "Plataforma"
-
-
+        "ERRORS": {
+            "1": {"phrase": "Esto no se puede hacer ahora.", "format": false},
+            "2": {"phrase": "Las coordenadas deben estar entre 1 y {}", "format": true},
+            "3": {"phrase": "¡Ops! Esa posición ya está ocupada.", "format": false},
+            "4": {"phrase": "¡Ya hay una ficha en esta posición!", "format": false},
+            "5": {"phrase": "Este idioma no está disponible, seleccione otro.", "format": false},
+            "6": {"phrase": "Seleccione una ficha válida entre las mostradas.", "format": false},
+            "7": {"phrase": "¿Desea salir del juego? La partida finalizará.", "format": false},
+            "8": {"phrase": "Eso no parece ser una coordenada válida.", "format": false}
+        },
+        "SPLASH": {
+            "1": {"phrase": "Nombre de jugador", "format": false},
+            "2": {"phrase": "Modo de juego", "format": false},
+            "3": {"phrase": "Tamaño del tablero", "format": false},
+            "4": {"phrase": "Humano vs Humano", "format": false},
+            "5": {"phrase": "Humano vs Bot", "format": false},
+            "6": {"phrase": "Bot vs Bot", "format": false},
+            "7": {"phrase": "Humano vs Humano vs Humano", "format": false},
+            "8": {"phrase": "Bot vs Bot vs Bot", "format": false},
+            "9": {"phrase": "Iniciando partida", "format": false}
+        },
+        "GAME": {
+            "1": {"phrase": "¿En qué idioma desea jugar?", "format": false},
+            "2": {"phrase": "Su idioma es el {}, ¿Correcto?", "format": true},
+            "3": {"phrase": "Coloca la coordenada {}", "format": true},
+            "4": {"phrase": "¡{} ha ganado la partida!", "format": true}
+        },
+        "INFO": {
+            "1": {"phrase": "¿Mostrar estadísticas?", "format": false},
+            "2": {"phrase": "Actualizando caché", "format": false},
+            "3": {"phrase": "Se ha salido del juego forzosamente", "format": false}
+        },
+        "MISC": {
+            "1": {"phrase": "Temporizador", "format": false},
+            "2": {"phrase": "Plataforma", "format": false}
+        }
     },
-
-
     "ENGLISH": {
-        "ERR1": "This cannot be done now.",
-        "ERR2f": "The coordinates must be between 1 and {}.",
-        "ERR3": "Oops! That position is already occupied.",
-        "ERR4": "There is already a token in that position!",
-        "ERR5": "This language is not available, please select another.",
-        "ERR6": "Please select a valid token from the displayed ones.",
-        "ERR7": "Do you want to exit the game? The game will end.",
-        "ERR8": "That doesn't seem to be a valid coordinate.",
-        
-        "SPLASH1": "Player name",
-        "SPLASH2": "Game mode",
-        "SPLASH3": "Board size",
-        "SPLASH4": "Human vs Human",
-        "SPLASH5": "Human vs Bot",
-        "SPLASH6": "Bot vs Bot",
-        "SPLASH7": "Human vs Human vs Human",
-        "SPLASH8": "Bot vs Bot vs Bot",
-        "SPLASH9": "Starting game",
-        
-        "GAME1": "What language would you like to play in?",
-        "GAME2f": "Your language is {}, correct?",
-        "GAME3f": "Place coordinate {}.",
-        "GAME4f": "¡{} has won the game!",
-        "GAME5": "",
-        "GAME6": "",
-        "GAME7": "",
-        "GAME8": "",
-        
-        "INFO1": "Show statistics?",
-        "INFO2": "Updating cache",
-        "INFO3": "You have forcibly exited the game",
-        "INFO4": "",
-        "INFO5": "",
-        "INFO6": "",
-        "INFO7": "",
-        "INFO8": "",
-        "INFO9": "",
-        
-        "MISC1": "Timer",
-        "MISC2": "Platform"
+        "ERRORS": {
+            "1": {"phrase": "This cannot be done now.", "format": false},
+            "2": {"phrase": "The coordinates must be between 1 and {}.", "format": true},
+            "3": {"phrase": "Oops! That position is already occupied.", "format": false},
+            "4": {"phrase": "There is already a token in that position!", "format": false},
+            "5": {"phrase": "This language is not available, please select another.", "format": false},
+            "6": {"phrase": "Please select a valid token from the displayed ones.", "format": false},
+            "7": {"phrase": "Do you want to exit the game? The game will end.", "format": false},
+            "8": {"phrase": "That does not seem to be a valid coordinate.", "format": false}
+        },
+        "SPLASH": {
+            "1": {"phrase": "Player name", "format": false},
+            "2": {"phrase": "Game mode", "format": false},
+            "3": {"phrase": "Board size", "format": false},
+            "4": {"phrase": "Human vs Human", "format": false},
+            "5": {"phrase": "Human vs Bot", "format": false},
+            "6": {"phrase": "Bot vs Bot", "format": false},
+            "7": {"phrase": "Human vs Human vs Human", "format": false},
+            "8": {"phrase": "Bot vs Bot vs Bot", "format": false},
+            "9": {"phrase": "Starting game", "format": false}
+        },
+        "GAME": {
+            "1": {"phrase": "What language would you like to play in?", "format": false},
+            "2": {"phrase": "Your language is {}, is that correct?", "format": true},
+            "3": {"phrase": "Enter coordinate {}", "format": true},
+            "4": {"phrase": "{} has won the game!", "format": true}
+        },
+        "INFO": {
+            "1": {"phrase": "Show statistics?", "format": false},
+            "2": {"phrase": "Updating cache", "format": false},
+            "3": {"phrase": "You have exited the game forcefully", "format": false}
+        },
+        "MISC": {
+            "1": {"phrase": "Timer", "format": false},
+            "2": {"phrase": "Platform", "format": false}
+        }
     },
-
-
     "JAPANESE": {
-        "ERR1": "今はこれを行うことはできません。",
-        "ERR2f": "座標は1から{}の間でなければなりません。",
-        "ERR3": "おっと！その位置はすでに占有されています。",
-        "ERR4": "その位置にはすでにチップがあります！",
-        "ERR5": "この言語は利用できません。別の言語を選択してください。",
-        "ERR6": "表示された有効なチップを選択してください。",
-        "ERR7": "ゲームを終了しますか？ゲームは終了します。",
-        "ERR8": "それは有効な座標のようには見えません。",
-        
-        "SPLASH1": "プレイヤー名",
-        "SPLASH2": "ゲームモード",
-        "SPLASH3": "ボードサイズ",
-        "SPLASH4": "人間対人間",
-        "SPLASH5": "人間対ボット",
-        "SPLASH6": "ボット対ボット",
-        "SPLASH7": "人間対人間対人間",
-        "SPLASH8": "ボット対ボット対ボット",
-        "SPLASH9": "ゲーム開始中",
-        
-        "GAME1": "どの言語でプレイしますか？",
-        "GAME2f": "あなたの言語は{}です。正しいですか？",
-        "GAME3f": "{}の座標を置いてください。",
-        "GAME4f": "！{}がゲームに勝ちました！",
-        "GAME5": "",
-        "GAME6": "",
-        "GAME7": "",
-        "GAME8": "",
-        "INFO1": "統計を表示しますか？",
-        "INFO2": "キャッシュを更新しています",
-        "INFO3": "強制的にゲームを終了しました",
-        "INFO4": "",
-        "INFO5": "",
-        "INFO6": "",
-        "INFO7": "",
-        "INFO8": "",
-        "INFO9": "",
-        "MISC1": "タイマー",
-        "MISC2": "プラットフォーム"
+        "ERRORS": {
+            "1": {"phrase": "今はこれを行うことはできません。", "format": false},
+            "2": {"phrase": "座標は1から{}の間でなければなりません。", "format": true},
+            "3": {"phrase": "おっと！その位置はすでに占有されています。", "format": false},
+            "4": {"phrase": "その位置にはすでにチップがあります！", "format": false},
+            "5": {"phrase": "この言語は利用できません。別の言語を選択してください。", "format": false},
+            "6": {"phrase": "表示された有効なチップを選択してください。", "format": false},
+            "7": {"phrase": "ゲームを終了しますか？ゲームは終了します。", "format": false},
+            "8": {"phrase": "それは有効な座標のようには見えません。", "format": false}
+        },
+        "SPLASH": {
+            "1": {"phrase": "プレイヤー名", "format": false},
+            "2": {"phrase": "ゲームモード", "format": false},
+            "3": {"phrase": "ボードサイズ", "format": false},
+            "4": {"phrase": "人間対人間", "format": false},
+            "5": {"phrase": "人間対ボット", "format": false},
+            "6": {"phrase": "ボット対ボット", "format": false},
+            "7": {"phrase": "人間対人間対人間", "format": false},
+            "8": {"phrase": "ボット対ボット対ボット", "format": false},
+            "9": {"phrase": "ゲーム開始中", "format": false}
+        },
+        "GAME": {
+            "1": {"phrase": "どの言語でプレイしますか？", "format": false},
+            "2": {"phrase": "あなたの言語は{}です。正しいですか？", "format": true},
+            "3": {"phrase": "座標{}を置いてください。", "format": true},
+            "4": {"phrase": "{}がゲームに勝ちました！", "format": true}
+        },
+        "INFO": {
+            "1": {"phrase": "統計を表示しますか？", "format": false},
+            "2": {"phrase": "キャッシュを更新しています", "format": false},
+            "3": {"phrase": "強制的にゲームを終了しました", "format": false}
+        },
+        "MISC": {
+            "1": {"phrase": "タイマー", "format": false},
+            "2": {"phrase": "プラットフォーム", "format": false}
+        }
     },
     "TRADITIONAL_CHINESE": {
-        "ERR1": "現在無法執行此操作。",
-        "ERR2f": "坐標必須在1和{}之間。",
-        "ERR3": "哎呀！那個位置已經被佔據了。",
-        "ERR4": "那個位置已經有棋子了！",
-        "ERR5": "此語言不可用，請選擇其他語言。",
-        "ERR6": "請選擇顯示的有效棋子。",
-        "ERR7": "您確定要退出遊戲嗎？遊戲將結束。",
-        "ERR8": "這看起來不是有效的坐標。",
-        
-        "SPLASH1": "玩家名稱",
-        "SPLASH2": "遊戲模式",
-        "SPLASH3": "棋盤大小",
-        "SPLASH4": "人對人",
-        "SPLASH5": "人對機器人",
-        "SPLASH6": "機器人對機器人",
-        "SPLASH7": "人對人對人",
-        "SPLASH8": "機器人對機器人對機器人",
-        "SPLASH9": "正在開始比賽",
-        
-        "GAME1": "您希望使用哪種語言遊玩？",
-        "GAME2f": "您的語言是{}，對嗎？",
-        "GAME3f": "請放置坐標{}。",
-        "GAME4f": "！{}贏得了比賽！",
-        "GAME5": "",
-        "GAME6": "",
-        "GAME7": "",
-        "GAME8": "",
-        
-        "INFO1": "是否顯示統計？",
-        "INFO2": "正在更新緩存",
-        "INFO3": "強制退出遊戲",
-        "INFO4": "",
-        "INFO5": "",
-        "INFO6": "",
-        "INFO7": "",
-        "INFO8": "",
-        "INFO9": "",
-        
-        "MISC1": "計時器",
-        "MISC2": "平台"
+        "ERRORS": {
+            "1": {"phrase": "現在無法執行此操作。", "format": false},
+            "2": {"phrase": "坐標必須在1和{}之間。", "format": true},
+            "3": {"phrase": "哎呀！那個位置已經被佔據了。", "format": false},
+            "4": {"phrase": "那個位置已經有棋子了！", "format": false},
+            "5": {"phrase": "此語言不可用，請選擇其他語言。", "format": false},
+            "6": {"phrase": "請選擇顯示的有效棋子。", "format": false},
+            "7": {"phrase": "您確定要退出遊戲嗎？遊戲將結束。", "format": false},
+            "8": {"phrase": "這看起來不是有效的坐標。", "format": false}
+        },
+        "SPLASH": {
+            "1": {"phrase": "玩家姓名", "format": false},
+            "2": {"phrase": "遊戲模式", "format": false},
+            "3": {"phrase": "棋盤大小", "format": false},
+            "4": {"phrase": "人類對人類", "format": false},
+            "5": {"phrase": "人類對機器人", "format": false},
+            "6": {"phrase": "機器人對機器人", "format": false},
+            "7": {"phrase": "人類對人類對人類", "format": false},
+            "8": {"phrase": "機器人對機器人對機器人", "format": false},
+            "9": {"phrase": "開始遊戲", "format": false}
+        },
+        "GAME": {
+            "1": {"phrase": "您想用哪種語言玩？", "format": false},
+            "2": {"phrase": "您的語言是{}，對嗎？", "format": true},
+            "3": {"phrase": "請輸入坐標{}。", "format": true},
+            "4": {"phrase": "{}贏得了比賽！", "format": true}
+        },
+        "INFO": {
+            "1": {"phrase": "顯示統計數據嗎？", "format": false},
+            "2": {"phrase": "正在更新緩存", "format": false},
+            "3": {"phrase": "您已強制退出遊戲", "format": false}
+        },
+        "MISC": {
+            "1": {"phrase": "計時器", "format": false},
+            "2": {"phrase": "平台", "format": false}
+        }
     },
-    "ITALIAN": {
-        "ERR1": "Non è possibile fare questo ora.",
-        "ERR2f": "Le coordinate devono essere tra 1 e {}.",
-        "ERR3": "Ops! Quella posizione è già occupata.",
-        "ERR4": "C'è già un gettone in questa posizione!",
-        "ERR5": "Questa lingua non è disponibile, seleziona un'altra.",
-        "ERR6": "Seleziona un gettone valido tra quelli mostrati.",
-        "ERR7": "Vuoi uscire dal gioco? La partita finirà.",
-        "ERR8": "Questa non sembra essere una coordinata valida.",
-        
-        "SPLASH1": "Nome del giocatore",
-        "SPLASH2": "Modalità di gioco",
-        "SPLASH3": "Dimensione del tabellone",
-        "SPLASH4": "Umano contro Umano",
-        "SPLASH5": "Umano contro Bot",
-        "SPLASH6": "Bot contro Bot",
-        "SPLASH7": "Umano contro Umano contro Umano",
-        "SPLASH8": "Bot contro Bot contro Bot",
-        "SPLASH9": "Inizio della partita",
-        
-        "GAME1": "In quale lingua vuoi giocare?",
-        "GAME2f": "La tua lingua è {}, corretto?",
-        "GAME3f": "Inserisci la coordinata {}.",
-        "GAME4f": "¡{} ha vinto la partita!",
-        "GAME5": "",
-        "GAME6": "",
-        "GAME7": "",
-        "GAME8": "",
-        
-        "INFO1": "Vuoi mostrare le statistiche?",
-        "INFO2": "Aggiornamento della cache",
-        "INFO3": "Sei uscito forzatamente dal gioco",
-        "INFO4": "",
-        "INFO5": "",
-        "INFO6": "",
-        "INFO7": "",
-        "INFO8": "",
-        "INFO9": "",
-        
-        "MISC1": "Timer",
-        "MISC2": "Piattaforma"
+    "SIMPLIFIED_CHINESE": {
+        "ERRORS": {
+            "1": {"phrase": "现在无法执行此操作。", "format": false},
+            "2": {"phrase": "坐标必须在1和{}之间。", "format": true},
+            "3": {"phrase": "哎呀！那个位置已经被占据了。", "format": false},
+            "4": {"phrase": "那个位置已经有棋子了！", "format": false},
+            "5": {"phrase": "此语言不可用，请选择其他语言。", "format": false},
+            "6": {"phrase": "请选择显示的有效棋子。", "format": false},
+            "7": {"phrase": "您确定要退出游戏吗？游戏将结束。", "format": false},
+            "8": {"phrase": "这看起来不是有效的坐标。", "format": false}
+        },
+        "SPLASH": {
+            "1": {"phrase": "玩家姓名", "format": false},
+            "2": {"phrase": "游戏模式", "format": false},
+            "3": {"phrase": "棋盘大小", "format": false},
+            "4": {"phrase": "人类对人类", "format": false},
+            "5": {"phrase": "人类对机器人", "format": false},
+            "6": {"phrase": "机器人对机器人", "format": false},
+            "7": {"phrase": "人类对人类对人类", "format": false},
+            "8": {"phrase": "机器人对机器人对机器人", "format": false},
+            "9": {"phrase": "开始游戏", "format": false}
+        },
+        "GAME": {
+            "1": {"phrase": "您想用哪种语言玩？", "format": false},
+            "2": {"phrase": "您的语言是{}，对吗？", "format": true},
+            "3": {"phrase": "请输入坐标{}。", "format": true},
+            "4": {"phrase": "{}赢得了比赛！", "format": true}
+        },
+        "INFO": {
+            "1": {"phrase": "显示统计数据吗？", "format": false},
+            "2": {"phrase": "正在更新缓存", "format": false},
+            "3": {"phrase": "您已强制退出游戏", "format": false}
+        },
+        "MISC": {
+            "1": {"phrase": "计时器", "format": false},
+            "2": {"phrase": "平台", "format": false}
+        }
     },
-    "GERMAN": {
-        "ERR1": "Das kann jetzt nicht gemacht werden.",
-        "ERR2f": "Die Koordinaten müssen zwischen 1 und {} liegen.",
-        "ERR3": "Ups! Diese Position ist bereits besetzt.",
-        "ERR4": "An dieser Position ist bereits ein Spielstein!",
-        "ERR5": "Diese Sprache ist nicht verfügbar, wählen Sie eine andere.",
-        "ERR6": "Wählen Sie einen gültigen Spielstein aus den angezeigten.",
-        "ERR7": "Möchten Sie das Spiel beenden? Das Spiel wird beendet.",
-        "ERR8": "Das scheint keine gültige Koordinate zu sein.",
-        
-        "SPLASH1": "Spielername",
-        "SPLASH2": "Spielmodus",
-        "SPLASH3": "Breite des Spielfelds",
-        "SPLASH4": "Mensch gegen Mensch",
-        "SPLASH5": "Mensch gegen Bot",
-        "SPLASH6": "Bot gegen Bot",
-        "SPLASH7": "Mensch gegen Mensch gegen Mensch",
-        "SPLASH8": "Bot gegen Bot gegen Bot",
-        "SPLASH9": "Spiel startet",
-        
-        "GAME1": "In welcher Sprache möchten Sie spielen?",
-        "GAME2f": "Ihre Sprache ist {}, richtig?",
-        "GAME3f": "Setzen Sie die Koordinate {}.",
-        "GAME4f": "¡{} hat das Spiel gewonnen!",
-        "GAME5": "",
-        "GAME6": "",
-        "GAME7": "",
-        "GAME8": "",
-        
-        "INFO1": "Möchten Sie Statistiken anzeigen?",
-        "INFO2": "Cache wird aktualisiert",
-        "INFO3": "Das Spiel wurde zwangsweise beendet",
-        "INFO4": "",
-        "INFO5": "",
-        "INFO6": "",
-        "INFO7": "",
-        "INFO8": "",
-        "INFO9": "",
-        
-        "MISC1": "Timer",
-        "MISC2": "Plattform"
-    },
-    "FRENCH": {
-        "ERR1": "Cela ne peut pas être fait maintenant.",
-        "ERR2f": "Les coordonnées doivent être comprises entre 1 et {}.",
-        "ERR3": "Oups ! Cette position est déjà occupée.",
-        "ERR4": "Il y a déjà un jeton à cette position !",
-        "ERR5": "Cette langue n'est pas disponible, sélectionnez-en une autre.",
-        "ERR6": "Sélectionnez un jeton valide parmi ceux affichés.",
-        "ERR7": "Voulez-vous quitter le jeu ? La partie se terminera.",
-        "ERR8": "Cela ne semble pas être une coordonnée valide.",
-        
-        "SPLASH1": "Nom du joueur",
-        "SPLASH2": "Mode de jeu",
-        "SPLASH3": "Taille du plateau",
-        "SPLASH4": "Humain contre Humain",
-        "SPLASH5": "Humain contre Bot",
-        "SPLASH6": "Bot contre Bot",
-        "SPLASH7": "Humain contre Humain contre Humain",
-        "SPLASH8": "Bot contre Bot contre Bot",
-        "SPLASH9": "Démarrage de la partie",
-        
-        "GAME1": "Dans quelle langue souhaitez-vous jouer ?",
-        "GAME2f": "Votre langue est le {}, correct ?",
-        "GAME3f": "Placez la coordonnée {}.",
-        "GAME4f": "¡{} a gagné la partie !",
-        "GAME5": "",
-        "GAME6": "",
-        "GAME7": "",
-        "GAME8": "",
-        
-        "INFO1": "Afficher les statistiques ?",
-        "INFO2": "Mise à jour du cache",
-        "INFO3": "Vous avez quitté le jeu de force",
-        "INFO4": "",
-        "INFO5": "",
-        "INFO6": "",
-        "INFO7": "",
-        "INFO8": "",
-        "INFO9": "",
-        
-        "MISC1": "Minuteur",
-        "MISC2": "Plateforme"
-    },
+
     "CATALAN": {
-        "ERR1": "Això no es pot fer ara.",
-        "ERR2f": "Les coordenades han d'estar entre 1 i {}.",
-        "ERR3": "Ups! Aquesta posició ja està ocupada.",
-        "ERR4": "Ja hi ha una fitxa en aquesta posició!",
-        "ERR5": "Aquesta llengua no està disponible, selecciona'n una altra.",
-        "ERR6": "Selecciona una fitxa vàlida entre les mostrades.",
-        "ERR7": "Voleu sortir del joc? La partida finalitzarà.",
-        "ERR8": "Això no sembla ser una coordenada vàlida.",
-        
-        "SPLASH1": "Nom del jugador",
-        "SPLASH2": "Mode de joc",
-        "SPLASH3": "Mida del tauler",
-        "SPLASH4": "Humà contra Humà",
-        "SPLASH5": "Humà contra Bot",
-        "SPLASH6": "Bot contra Bot",
-        "SPLASH7": "Humà contra Humà contra Humà",
-        "SPLASH8": "Bot contra Bot contra Bot",
-        "SPLASH9": "Iniciant partida",
-        
-        "GAME1": "En quin idioma voleu jugar?",
-        "GAME2f": "El teu idioma és el {}, correcte?",
-        "GAME3f": "Col·loca la coordenada {}.",
-        "GAME4f": "¡{} ha guanyat la partida!",
-        "GAME5": "",
-        "GAME6": "",
-        "GAME7": "",
-        "GAME8": "",
-        
-        "INFO1": "Vols mostrar estadístiques?",
-        "INFO2": "Actualitzant memòria cau",
-        "INFO3": "S'ha sortit del joc forçosament",
-        "INFO4": "",
-        "INFO5": "",
-        "INFO6": "",
-        "INFO7": "",
-        "INFO8": "",
-        "INFO9": "",
-        
-        "MISC1": "Temporitzador",
-        "MISC2": "Plataforma"
+        "ERRORS": {
+            "1": {"phrase": "Ara mateix no es pot executar aquesta acció.", "format": false},
+            "2": {"phrase": "Les coordenades han d'estar entre 1 i {}.", "format": true},
+            "3": {"phrase": "Ai! Aquest lloc ja està ocupat.", "format": false},
+            "4": {"phrase": "Aquest lloc ja té una fitxa!", "format": false},
+            "5": {"phrase": "Aquesta llengua no està disponible, si us plau, trieu una altra llengua.", "format": false},
+            "6": {"phrase": "Si us plau, seleccioneu una fitxa vàlida per mostrar.", "format": false},
+            "7": {"phrase": "Esteu segur que voleu sortir del joc? El joc acabarà.", "format": false},
+            "8": {"phrase": "Això no sembla ser coordenades vàlides.", "format": false}
+        },
+        "SPLASH": {
+            "1": {"phrase": "Nom del jugador", "format": false},
+            "2": {"phrase": "Mode de joc", "format": false},
+            "3": {"phrase": "Mida del tauler", "format": false},
+            "4": {"phrase": "Humà contra humà", "format": false},
+            "5": {"phrase": "Humà contra robot", "format": false},
+            "6": {"phrase": "Robot contra robot", "format": false},
+            "7": {"phrase": "Humà contra humà contra humà", "format": false},
+            "8": {"phrase": "Robot contra robot contra robot", "format": false},
+            "9": {"phrase": "Començar el joc", "format": false}
+        },
+        "GAME": {
+            "1": {"phrase": "Quina llengua voldríeu jugar?", "format": false},
+            "2": {"phrase": "La vostra llengua és {}. És correcte?", "format": true},
+            "3": {"phrase": "Si us plau, introduïu les coordenades {}.", "format": true},
+            "4": {"phrase": "{} ha guanyat la partida!", "format": true}
+        },
+        "INFO": {
+            "1": {"phrase": "Vols mostrar les estadístiques?", "format": false},
+            "2": {"phrase": "Actualitzant la memòria cau", "format": false},
+            "3": {"phrase": "Has sortit del joc forçadament", "format": false}
+        },
+        "MISC": {
+            "1": {"phrase": "Temporitzador", "format": false},
+            "2": {"phrase": "Plataforma", "format": false}
+        }
     },
     "EUSKERA": {
-        "ERR1": "Oraingoan ezin da egin.",
-        "ERR2f": "Koordinatak 1 eta {} artean egon behar dira.",
-        "ERR3": "Epa! Postu hori jada okupatuta dago.",
-        "ERR4": "Postu horretan jada pieza bat dago!",
-        "ERR5": "Hizkuntza hau ez dago eskuragarri, beste bat hautatu mesedez.",
-        "ERR6": "Erakutsitako pieza baliagarri bat aukeratu.",
-        "ERR7": "Jokoa uzteko prest al zaude? Partida amaituko da.",
-        "ERR8": "Hori ez da koordenada baliagarri bat dirudi.",
-        
-        "SPLASH1": "Jokalariaren izena",
-        "SPLASH2": "Joko modua",
-        "SPLASH3": "Taula tamaina",
-        "SPLASH4": "Gizakia vs Gizakia",
-        "SPLASH5": "Gizakia vs Bot",
-        "SPLASH6": "Bot vs Bot",
-        "SPLASH7": "Gizakia vs Gizakia vs Gizakia",
-        "SPLASH8": "Bot vs Bot vs Bot",
-        "SPLASH9": "Partida hasieran",
-        
-        "GAME1": "Zein hizkuntzatan jolastu nahi duzu?",
-        "GAME2f": "Zure hizkuntza {} da, ezta?",
-        "GAME3f": "{} koordenada jarri.",
-        "GAME4f": "¡{} irabazi du partida!",
-        "GAME5": "",
-        "GAME6": "",
-        "GAME7": "",
-        "GAME8": "",
-        
-        "INFO1": "Estatistikak erakutsi?",
-        "INFO2": "Cache eguneratzen",
-        "INFO3": "Jokoa behartutako moduan utzi da",
-        "INFO4": "",
-        "INFO5": "",
-        "INFO6": "",
-        "INFO7": "",
-        "INFO8": "",
-        "INFO9": "",
-        
-        "MISC1": "Tenporizatzailea",
-        "MISC2": "Plataforma"
+        "ERRORS": {
+            "1": {"phrase": "Orain ezin da ekintza hau burutu.", "format": false},
+            "2": {"phrase": "Koordenatak 1 eta {} artean egon behar dira.", "format": true},
+            "3": {"phrase": "Edozein! Leku hori jada okupatuta dago.", "format": false},
+            "4": {"phrase": "Leku horretan fitxa bat dago jada!", "format": false},
+            "5": {"phrase": "Hizkuntza hau erabilgarri ez dago, mesedez, beste hizkuntza bat aukeratu.", "format": false},
+            "6": {"phrase": "Mesedez, hautatu erakusteko fitxa balioduna.", "format": false},
+            "7": {"phrase": "Ziur zaude jolastia utzi nahi duzula? Jokoa amaituko da.", "format": false},
+            "8": {"phrase": "Hau baliozko koordenatak ez dirudi.", "format": false}
+        },
+        "SPLASH": {
+            "1": {"phrase": "Jokalariaren izena", "format": false},
+            "2": {"phrase": "Joko modu", "format": false},
+            "3": {"phrase": "Taularen tamaina", "format": false},
+            "4": {"phrase": "Gizon kontra gizon", "format": false},
+            "5": {"phrase": "Gizon kontra robota", "format": false},
+            "6": {"phrase": "Robota kontra robota", "format": false},
+            "7": {"phrase": "Gizon kontra gizon kontra gizon", "format": false},
+            "8": {"phrase": "Robota kontra robota kontra robota", "format": false},
+            "9": {"phrase": "Jokoa hasi", "format": false}
+        },
+        "GAME": {
+            "1": {"phrase": "Ze hizkuntzatan jolastu nahi duzu?", "format": false},
+            "2": {"phrase": "Zure hizkuntza {} da, ezta?", "format": true},
+            "3": {"phrase": "Mesedez, sartu koordenatak {}.", "format": true},
+            "4": {"phrase": "{} irabazi du partida!", "format": true}
+        },
+        "INFO": {
+            "1": {"phrase": "Astatistika erakutsi nahi al dituzu?", "format": false},
+            "2": {"phrase": "Cache eguneratzen", "format": false},
+            "3": {"phrase": "Jokoa behartu duzu utzi", "format": false}
+        },
+        "MISC": {
+            "1": {"phrase": "Kronometroa", "format": false},
+            "2": {"phrase": "Plataforma", "format": false}
+        }
     },
     "RUSSIAN": {
-        "ERR1": "Это сейчас нельзя сделать.",
-        "ERR2f": "Координаты должны быть между 1 и {}.",
-        "ERR3": "Ой! Это положение уже занято.",
-        "ERR4": "В этом положении уже есть фишка!",
-        "ERR5": "Этот язык недоступен, выберите другой.",
-        "ERR6": "Выберите допустимую фишку из показанных.",
-        "ERR7": "Вы хотите выйти из игры? Игра закончится.",
-        "ERR8": "Это не похоже на допустимую координату.",
-        
-        "SPLASH1": "Имя игрока",
-        "SPLASH2": "Режим игры",
-        "SPLASH3": "Размер доски",
-        "SPLASH4": "Человек против Человека",
-        "SPLASH5": "Человек против Бота",
-        "SPLASH6": "Бот против Бота",
-        "SPLASH7": "Человек против Человека против Человека",
-        "SPLASH8": "Бот против Бота против Бота",
-        "SPLASH9": "Начало игры",
-        
-        "GAME1": "На каком языке вы хотите играть?",
-        "GAME2f": "Ваш язык {} верно?",
-        "GAME3f": "Поместите координату {}.",
-        "GAME4f": "¡{} выиграл игру!",
-        "GAME5": "Игра была завершена принудительно",
-        "GAME6": "",
-        "GAME7": "",
-        "GAME8": "",
-        
-        "INFO1": "Показать статистику?",
-        "INFO2": "Обновление кэша",
-        "INFO3": "",
-        "INFO4": "",
-        "INFO5": "",
-        "INFO6": "",
-        "INFO7": "",
-        "INFO8": "",
-        "INFO9": "",
-        
-        "MISC1": "Таймер",
-        "MISC2": "Платформа"    
+        "ERRORS": {
+            "1": {"phrase": "В данный момент это действие выполнить нельзя.", "format": false},
+            "2": {"phrase": "Координаты должны быть от 1 до {}.", "format": true},
+            "3": {"phrase": "Ой! Это место уже занято.", "format": false},
+            "4": {"phrase": "На этом месте уже стоит фишка!", "format": false},
+            "5": {"phrase": "Этот язык недоступен, выберите другой язык.", "format": false},
+            "6": {"phrase": "Пожалуйста, выберите действующую фишку для отображения.", "format": false},
+            "7": {"phrase": "Вы уверены, что хотите выйти из игры? Игра будет завершена.", "format": false},
+            "8": {"phrase": "Похоже, это недействительные координаты.", "format": false}
+        },
+        "SPLASH": {
+            "1": {"phrase": "Имя игрока", "format": false},
+            "2": {"phrase": "Режим игры", "format": false},
+            "3": {"phrase": "Размер поля", "format": false},
+            "4": {"phrase": "Человек против человека", "format": false},
+            "5": {"phrase": "Человек против робота", "format": false},
+            "6": {"phrase": "Робот против робота", "format": false},
+            "7": {"phrase": "Человек против человека против человека", "format": false},
+            "8": {"phrase": "Робот против робота против робота", "format": false},
+            "9": {"phrase": "Начать игру", "format": false}
+        },
+        "GAME": {
+            "1": {"phrase": "На каком языке вы хотите играть?", "format": false},
+            "2": {"phrase": "Ваш язык — {}, верно?", "format": true},
+            "3": {"phrase": "Пожалуйста, введите координаты {}.", "format": true},
+            "4": {"phrase": "{} выиграл игру!", "format": true}
+        },
+        "INFO": {
+            "1": {"phrase": "Вы хотите показать статистику?", "format": false},
+            "2": {"phrase": "Обновление кеша", "format": false},
+            "3": {"phrase": "Вы принудительно вышли из игры", "format": false}
+        },
+        "MISC": {
+            "1": {"phrase": "Таймер", "format": false},
+            "2": {"phrase": "Платформа", "format": false}
+        }
+    },
+    "FRENCH": {
+        "ERRORS": {
+            "1": {"phrase": "Cette action ne peut pas être effectuée pour le moment.", "format": false},
+            "2": {"phrase": "Les coordonnées doivent être comprises entre 1 et {}.", "format": true},
+            "3": {"phrase": "Oups ! Cet emplacement est déjà occupé.", "format": false},
+            "4": {"phrase": "Cet emplacement a déjà un jeton !", "format": false},
+            "5": {"phrase": "Cette langue n'est pas disponible, veuillez choisir une autre langue.", "format": false},
+            "6": {"phrase": "Veuillez sélectionner un jeton valide à afficher.", "format": false},
+            "7": {"phrase": "Êtes-vous sûr de vouloir quitter le jeu ? La partie sera terminée.", "format": false},
+            "8": {"phrase": "Cela ne semble pas être des coordonnées valides.", "format": false}
+        },
+        "SPLASH": {
+            "1": {"phrase": "Nom du joueur", "format": false},
+            "2": {"phrase": "Mode de jeu", "format": false},
+            "3": {"phrase": "Taille du plateau", "format": false},
+            "4": {"phrase": "Homme contre homme", "format": false},
+            "5": {"phrase": "Homme contre robot", "format": false},
+            "6": {"phrase": "Robot contre robot", "format": false},
+            "7": {"phrase": "Homme contre homme contre homme", "format": false},
+            "8": {"phrase": "Robot contre robot contre robot", "format": false},
+            "9": {"phrase": "Commencer le jeu", "format": false}
+        },
+        "GAME": {
+            "1": {"phrase": "Dans quelle langue souhaitez-vous jouer ?", "format": false},
+            "2": {"phrase": "Votre langue est {}, n'est-ce pas ?", "format": true},
+            "3": {"phrase": "Veuillez entrer les coordonnées {}.", "format": true},
+            "4": {"phrase": "{} a gagné la partie !", "format": true}
+        },
+        "INFO": {
+            "1": {"phrase": "Voulez-vous afficher les statistiques ?", "format": false},
+            "2": {"phrase": "Mise à jour du cache", "format": false},
+            "3": {"phrase": "Vous avez quitté le jeu de force", "format": false}
+        },
+        "MISC": {
+            "1": {"phrase": "Minuteur", "format": false},
+            "2": {"phrase": "Plateforme", "format": false}
+        }
+    },
+    "GERMAN": {
+        "ERRORS": {
+            "1": {"phrase": "Diese Aktion kann momentan nicht ausgeführt werden.", "format": false},
+            "2": {"phrase": "Die Koordinaten müssen zwischen 1 und {} liegen.", "format": true},
+            "3": {"phrase": "Oh! Dieser Platz ist bereits belegt.", "format": false},
+            "4": {"phrase": "Auf diesem Platz befindet sich bereits ein Token!", "format": false},
+            "5": {"phrase": "Diese Sprache ist nicht verfügbar, bitte wählen Sie eine andere Sprache.", "format": false},
+            "6": {"phrase": "Bitte wählen Sie ein gültiges Token zur Anzeige aus.", "format": false},
+            "7": {"phrase": "Sind Sie sicher, dass Sie das Spiel verlassen möchten? Das Spiel wird beendet.", "format": false},
+            "8": {"phrase": "Das scheint keine gültigen Koordinaten zu sein.", "format": false}
+        },
+        "SPLASH": {
+            "1": {"phrase": "Spielername", "format": false},
+            "2": {"phrase": "Spielmodus", "format": false},
+            "3": {"phrase": "Brettgröße", "format": false},
+            "4": {"phrase": "Mensch gegen Mensch", "format": false},
+            "5": {"phrase": "Mensch gegen Roboter", "format": false},
+            "6": {"phrase": "Roboter gegen Roboter", "format": false},
+            "7": {"phrase": "Mensch gegen Mensch gegen Mensch", "format": false},
+            "8": {"phrase": "Roboter gegen Roboter gegen Roboter", "format": false},
+            "9": {"phrase": "Spiel starten", "format": false}
+        },
+        "GAME": {
+            "1": {"phrase": "In welcher Sprache möchten Sie spielen?", "format": false},
+            "2": {"phrase": "Ihre Sprache ist {}, oder?", "format": true},
+            "3": {"phrase": "Bitte geben Sie die Koordinaten {} ein.", "format": true},
+            "4": {"phrase": "{} hat das Spiel gewonnen!", "format": true}
+        },
+        "INFO": {
+            "1": {"phrase": "Möchten Sie die Statistiken anzeigen?", "format": false},
+            "2": {"phrase": "Cache wird aktualisiert", "format": false},
+            "3": {"phrase": "Sie haben das Spiel gewaltsam verlassen", "format": false}
+        },
+        "MISC": {
+            "1": {"phrase": "Timer", "format": false},
+            "2": {"phrase": "Plattform", "format": false}
+        }
+    },
+
+    "ITALIAN": {
+        "ERRORS": {
+            "1": {"phrase": "Questa azione non può essere eseguita al momento.", "format": false},
+            "2": {"phrase": "Le coordinate devono essere tra 1 e {}.", "format": true},
+            "3": {"phrase": "Oh! Questo posto è già occupato.", "format": false},
+            "4": {"phrase": "Questo posto ha già un gettone!", "format": false},
+            "5": {"phrase": "Questa lingua non è disponibile, per favore scegli un'altra lingua.", "format": false},
+            "6": {"phrase": "Seleziona un gettone valido da visualizzare.", "format": false},
+            "7": {"phrase": "Sei sicuro di voler uscire dal gioco? La partita verrà terminata.", "format": false},
+            "8": {"phrase": "Queste non sembrano essere coordinate valide.", "format": false}
+        },
+        "SPLASH": {
+            "1": {"phrase": "Nome del giocatore", "format": false},
+            "2": {"phrase": "Modalità di gioco", "format": false},
+            "3": {"phrase": "Dimensione del tabellone", "format": false},
+            "4": {"phrase": "Uomo contro uomo", "format": false},
+            "5": {"phrase": "Uomo contro robot", "format": false},
+            "6": {"phrase": "Robot contro robot", "format": false},
+            "7": {"phrase": "Uomo contro uomo contro uomo", "format": false},
+            "8": {"phrase": "Robot contro robot contro robot", "format": false},
+            "9": {"phrase": "Inizia il gioco", "format": false}
+        },
+        "GAME": {
+            "1": {"phrase": "In quale lingua vuoi giocare?", "format": false},
+            "2": {"phrase": "La tua lingua è {}, giusto?", "format": true},
+            "3": {"phrase": "Inserisci le coordinate {}.", "format": true},
+            "4": {"phrase": "{} ha vinto la partita!", "format": true}
+        },
+        "INFO": {
+            "1": {"phrase": "Vuoi visualizzare le statistiche?", "format": false},
+            "2": {"phrase": "Aggiornamento della cache", "format": false},
+            "3": {"phrase": "Hai abbandonato il gioco forzatamente", "format": false}
+        },
+        "MISC": {
+            "1": {"phrase": "Timer", "format": false},
+            "2": {"phrase": "Piattaforma", "format": false}
+        }
     }
-}
+}    
 
-
+    

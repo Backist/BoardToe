@@ -42,7 +42,7 @@ Copyright TheWisker-Backist 2022-2024 on GPL 3.0 License. See LICENSE for furthe
 from src.models.player import Player
 from src.tokens import TOKENS
 from src.helpers import win_check
-from pybeaut import Col
+from src.termui.colors import Color
 from time import perf_counter_ns
 from random import choice, randint
 from typing import List, Tuple, Union  
@@ -76,7 +76,7 @@ class Bot(Player):
         self, 
         token: str = TOKENS["CIRCLE_RED"],  # Por defecto es el circulo rojo.
         name: str = "",
-        color: Col = Col.white,
+        color: Color = Color.LIGHT_WHITE,
         difficulty: str = "Normal",
         custom_doc: str = None
     ):
@@ -93,8 +93,8 @@ class Bot(Player):
         self._difficulty: str = difficulty
         self.__custom_doc__ = custom_doc if custom_doc and isinstance(custom_doc, str) else None
 
-
-    def is_bot(self) -> bool:
+    @staticmethod
+    def is_bot() -> bool:
         """Retorna True indicando que este jugador es un bot."""
         return True
 

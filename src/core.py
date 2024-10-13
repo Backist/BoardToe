@@ -7,8 +7,6 @@ This module contain the main class of Boardtoe game.
 Copyright 2022-2024 Backist under license GPL 3.0.
 """
 
-
-
 from src.termui.logger import Logger
 from src import helpers
 from src import i18n
@@ -43,7 +41,7 @@ class BoardGame:
         size: BoardSize | tuple[int, int],
         _player1: Player,
         _player2: Player,
-        game_lang: i18n.Languages_ = i18n.Languages_.SPANISH,
+        game_lang: i18n.Language = i18n.Language.SPANISH,
         show_stats: bool = True
 
     ):

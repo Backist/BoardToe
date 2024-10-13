@@ -1,18 +1,17 @@
 """
-Module containing the functions and animations to stream the game through the console.
+Modulo que contiene las funciones vitales para mostrar el juego en la terminal.
+Aunque no está terminado, está pensado para contener todas las animaciones de texto
+únicamente. Luego este archivo se llama en el main.py, que lleva el flujo del programa y donde 
+corre curses.
 
-
-Backest 2022-2024 under GPL 3.0 License. See LICENSE for details.
+Backest-TheWisker 2022-2024 under GPL 3.0 License. See LICENSE for details.
 """
 
 
-# from click import secho, echo, echo_via_pager, confirm, pause
-
 import textwrap
 
-from src.termui import banners
+# from click import secho, echo, echo_via_pager, confirm, pause
 from src.constants import IS_WINDOWS
-from src import constants 
 from pybeaut import Box, Colorate, Cursor, Col
 from contextlib import suppress
 from pynput import keyboard
@@ -36,7 +35,6 @@ class SkipAnimationTrigger:
     def start_listener(self):
         with keyboard.Listener(on_press=self.on_press) as listener:
             listener.join()
-
 
 
 def padding(width: int): return print(" "*width)
@@ -130,8 +128,8 @@ def reveal_anim(t: str, interval: Union[int,float] = 0.03, pause_comma: float = 
 
 
 
-def _make_box(fields: List[str], color: Col = Col.white, btitle: str = None, 
-              enum: bool = False, simplecube: bool = False) -> str:
+def make_box(fields: List[str], color: Col = Col.white, btitle: str = None, 
+             enum: bool = False, simplecube: bool = False) -> str:
  
     t = []
     # if btitle is not None:
@@ -151,26 +149,6 @@ def _make_box(fields: List[str], color: Col = Col.white, btitle: str = None,
     return Colorate.Color(color, Box.DoubleCube(f"{btitle}\n") + Box.DoubleCube("".join(t)) if color else Box.SimpleCube(f"{btitle}\n")+ "\n" + pb.Box.DoubleCube("".join(t)))
 
 
-def load_menu():
-    "Load the splash frame"
-
-    Cursor.HideCursor()
-    loading_anim(randint(2, 3), color= Col.cyan, hc=False)
-
-    cls()    
-    getpass(Colorate.Horizontal(Col.blue_to_cyan, "Press Enter Key to continue. . ."))
-    cls()
-
-    print(Colorate.Horizontal(Col.blue_to_cyan, banners.BANNER))
-    padding(3)
-    reveal_anim(constants.SPLASH_TEXT, adjust_content= True, center=True)
-    Cursor.ShowCursor()
-
-def config_menu():
-    ...
-
-def load_game():
-    config_menu()
 
 
 if __name__ == "__main__":
